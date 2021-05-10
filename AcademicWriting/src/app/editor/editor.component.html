@@ -1,0 +1,19 @@
+<mat-toolbar>
+  <span>Dokument</span>
+  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened>Drawer content</mat-drawer>
+  <mat-drawer-content>
+    <mat-grid-list cols="2" rowHeight="50px">
+      <mat-grid-tile class="menu" rowspan="1">1</mat-grid-tile>
+      <mat-grid-tile class="menu" rowspan="1">2</mat-grid-tile>
+      <mat-grid-tile rowspan="15">3</mat-grid-tile>
+      <mat-grid-tile rowspan="15">4</mat-grid-tile>
+    </mat-grid-list>
+  </mat-drawer-content>
+</mat-drawer-container>
+
