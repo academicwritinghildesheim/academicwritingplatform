@@ -1,4 +1,4 @@
-.example-container {
+.container {
   width: 100%;
   height: 100%;
 }
@@ -11,5 +11,43 @@ mat-grid-tile {
 .menu {
   background: gray;
   height: 20%;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.side-nav {
+  background: rgba(0, 0, 0, 0.79);
+  width: 20%;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.recent {
+  color: rgba(255, 255, 255, 0.68);
+  margin-left: 20px;
+}
+
+.sidenav-buttons {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.sidenav-toolbar {
+  height: 8%;
+  background: rgba(0, 0, 0, 0);
+}
+
+.file {
+  color: rgba(255, 255, 255, 0.68);
+  font-weight: 1;
+  font-size: 20px;
+}
+
+mat-list {
+  margin-left: 20px;
 }
 

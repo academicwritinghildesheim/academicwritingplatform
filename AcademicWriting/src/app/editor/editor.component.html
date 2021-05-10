@@ -1,12 +1,43 @@
 <mat-toolbar>
   <span>Dokument</span>
-  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-    <mat-icon>more_vert</mat-icon>
+  <span class="spacer"></span>
+  <button mat-icon-button>
+    <mat-icon>vertical_split</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon>analytics</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon>search</mat-icon>
   </button>
 </mat-toolbar>
 
-<mat-drawer-container class="example-container">
-  <mat-drawer mode="side" opened>Drawer content</mat-drawer>
+<mat-drawer-container class="container">
+  <mat-drawer mode="side" opened class="side-nav">
+    <mat-toolbar class="sidenav-toolbar">
+      <span class="file">Datei</span>
+      <span class="spacer"></span>
+      <div class="sidenav-buttons">
+        <button mat-icon-button>
+          <mat-icon class="icon-sidenav">add</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon class="icon-sidenav">close</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon class="icon-sidenav">edit</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <br>
+    <span class="recent">Zuletzt geöffnete Dateien</span>
+    <mat-list>
+      <mat-list-item> Dokument</mat-list-item>
+      <mat-list-item> Dokument2</mat-list-item>
+      <mat-list-item> Dokument3</mat-list-item>
+      <mat-list-item> Dokument4</mat-list-item>
+    </mat-list>
+  </mat-drawer>
   <mat-drawer-content>
     <mat-grid-list cols="2" rowHeight="50px">
       <mat-grid-tile class="menu" rowspan="1">1</mat-grid-tile>
