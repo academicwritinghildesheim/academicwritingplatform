@@ -12,8 +12,8 @@
   </button>
 </mat-toolbar>
 
-<mat-drawer-container class="container">
-  <mat-drawer mode="side" opened class="side-nav">
+<mat-sidenav-container class="container">
+  <mat-sidenav opened mode="side" opened class="side-nav">
     <mat-toolbar class="sidenav-toolbar">
       <span class="file">Datei</span>
       <span class="spacer"></span>
@@ -37,14 +37,41 @@
       <mat-list-item> Dokument3</mat-list-item>
       <mat-list-item> Dokument4</mat-list-item>
     </mat-list>
-  </mat-drawer>
-  <mat-drawer-content>
+  </mat-sidenav>
+  <mat-sidenav opened mode="side" opened class="side-nav" position="end">
+    <mat-toolbar class="sidenav-toolbar">
+      <span class="file">Statistiken</span>
+    </mat-toolbar>
+
+  </mat-sidenav>
+  <!-- Main-Content -->
     <mat-grid-list cols="2" rowHeight="50px">
-      <mat-grid-tile class="menu" rowspan="1">1</mat-grid-tile>
-      <mat-grid-tile class="menu" rowspan="1">2</mat-grid-tile>
+      <mat-grid-tile class="menu" rowspan="1">
+        <h2>Editor</h2>
+        <span class="spacer"></span>
+        <button mat-icon-button>
+        <mat-icon>format_color_text</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>format_bold</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>format_italic</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>format_size</mat-icon>
+      </button>
+    </mat-grid-tile>
+      <mat-grid-tile class="menu" rowspan="1">
+      <h2>Preview</h2>
+      <span class="spacer"></span>
+      <button mat-icon-button>
+      <mat-icon>picture_as_pdf</mat-icon>
+    </button>
+      </mat-grid-tile>
       <mat-grid-tile rowspan="15">3</mat-grid-tile>
       <mat-grid-tile rowspan="15">4</mat-grid-tile>
     </mat-grid-list>
-  </mat-drawer-content>
-</mat-drawer-container>
+      <!-- Main-Content -->
+</mat-sidenav-container>
 
