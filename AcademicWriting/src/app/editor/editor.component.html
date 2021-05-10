@@ -1,30 +1,30 @@
 <mat-toolbar>
   <span>Dokument</span>
   <span class="spacer"></span>
-  <button mat-icon-button>
+  <button mat-icon-button matTooltip="Dateiübersicht öffnen">
     <mat-icon>vertical_split</mat-icon>
   </button>
-  <button mat-icon-button>
+  <button mat-icon-button matTooltip="Statistiken öffnen">
     <mat-icon>analytics</mat-icon>
   </button>
-  <button mat-icon-button>
+  <button mat-icon-button matTooltip="Suche">
     <mat-icon>search</mat-icon>
   </button>
 </mat-toolbar>
 
-<mat-drawer-container class="container">
-  <mat-drawer mode="side" opened class="side-nav">
+<mat-sidenav-container class="container">
+  <mat-sidenav opened mode="side" opened class="side-nav">
     <mat-toolbar class="sidenav-toolbar">
       <span class="file">Datei</span>
       <span class="spacer"></span>
       <div class="sidenav-buttons">
-        <button mat-icon-button>
+        <button mat-icon-button matTooltip="Erstellen">
           <mat-icon class="icon-sidenav">add</mat-icon>
         </button>
-        <button mat-icon-button>
+        <button mat-icon-button matTooltip="Schließen">
           <mat-icon class="icon-sidenav">close</mat-icon>
         </button>
-        <button mat-icon-button>
+        <button mat-icon-button matTooltip="Bearbeiten">
           <mat-icon class="icon-sidenav">edit</mat-icon>
         </button>
       </div>
@@ -37,14 +37,41 @@
       <mat-list-item> Dokument3</mat-list-item>
       <mat-list-item> Dokument4</mat-list-item>
     </mat-list>
-  </mat-drawer>
-  <mat-drawer-content>
-    <mat-grid-list cols="2" rowHeight="50px">
-      <mat-grid-tile class="menu" rowspan="1">1</mat-grid-tile>
-      <mat-grid-tile class="menu" rowspan="1">2</mat-grid-tile>
-      <mat-grid-tile rowspan="15">3</mat-grid-tile>
-      <mat-grid-tile rowspan="15">4</mat-grid-tile>
-    </mat-grid-list>
-  </mat-drawer-content>
-</mat-drawer-container>
+  </mat-sidenav>
+  <mat-sidenav opened mode="side" opened class="side-nav" position="end">
+    <mat-toolbar class="sidenav-toolbar">
+      <span class="file">Statistiken</span>
+    </mat-toolbar>
+
+  </mat-sidenav>
+  <!-- Main-Content -->
+  <mat-grid-list cols="2" rowHeight="50px">
+    <mat-grid-tile class="menu" rowspan="1">
+      <h2>Editor</h2>
+      <span class="spacer"></span>
+      <button mat-icon-button matTooltip="Schriftfarbe">
+        <mat-icon>format_color_text</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Fett">
+        <mat-icon>format_bold</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Kursiv">
+        <mat-icon>format_italic</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Schriftgröße">
+        <mat-icon>format_size</mat-icon>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile class="menu" rowspan="1">
+      <h2>Preview</h2>
+      <span class="spacer"></span>
+      <button mat-icon-button matTooltip="Pdf erstellen">
+        <mat-icon>picture_as_pdf</mat-icon>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile rowspan="15"></mat-grid-tile>
+    <mat-grid-tile rowspan="15"></mat-grid-tile>
+  </mat-grid-list>
+  <!-- Main-Content -->
+</mat-sidenav-container>
 
