@@ -8,14 +8,14 @@ bp = Blueprint('hello_world', __name__, url_prefix='/api')
 @bp.route('/hello_world')
 def hello_world():
 
-    #user = user_schema.load({'username': 'test', 'email': 'test@test.de', 'password': ''})
+    # user = user_schema.load({'username': 'test', 'email': 'test@test.de', 'password': ''})
 
-    #user.save()
+    # user.save()
 
-    #user = User.query.filter_by(username='test').first()
+    # user = User.query.filter_by(username='test').first()
 
-    #user = user_schema.dump(user)
+    # user = user_schema.dump(user)
 
-    #print(user)
+    # print(user)
 
     return make_response(jsonify(message='Hello World')), 200
