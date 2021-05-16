@@ -22,6 +22,7 @@ export class DialogElementsExampleDialog {
   constructor(public dialog: MatDialog) {}
   
  closeDialog(){
+   //schließt alle dialogs. mit dialogRef lösen?
     this.dialog.closeAll()
   }
 

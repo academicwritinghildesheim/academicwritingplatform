@@ -39,10 +39,17 @@
       <mat-list-item> Dokument4</mat-list-item>
     </mat-list>
   </mat-sidenav>
+  
   <mat-sidenav #sidenavRight opened mode="side" opened class="side-nav" position="end">
     <mat-toolbar class="sidenav-toolbar">
       <span class="file">Statistiken</span>
     </mat-toolbar>
+    <br>
+    <mat-list>
+      <mat-list-item>
+        <app-count-down> </app-count-down>
+      </mat-list-item>
+    </mat-list>
 
   </mat-sidenav>
   <!-- Main-Content -->
@@ -70,7 +77,8 @@
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </mat-grid-tile>
-    <mat-grid-tile rowspan="15"></mat-grid-tile>
+    <mat-grid-tile rowspan="15">
+    </mat-grid-tile>
     <mat-grid-tile rowspan="15"></mat-grid-tile>
   </mat-grid-list>
   <!-- Main-Content -->
