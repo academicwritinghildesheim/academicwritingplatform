@@ -13,6 +13,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MarkdownModule } from 'ngx-markdown';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    FormsModule,
+    MarkdownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
