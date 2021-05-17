@@ -3,19 +3,42 @@ from api.database.paper import Paper, paper_schema, papers_schema
 from api import db
 from sqlalchemy.orm import sessionmaker
 
+errors = []
 
+bp = Blueprint('paper', __name__, url_prefix='/api')
 
-bp = Blueprint('paper_route', __name__, url_prefix='/api')
-
-@bp.route('/paper_route', methods=['POST', 'GET', 'PUT', 'DELETE'])
+@bp.route('/paper', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def paper():
     if request.method == 'POST':
-        print('POST')
+        try:
+            new_paper = Paper(author_id=request.values['author_id'], title=request.values['title'], content=request.values['content'])
+            db.session.add(new_paper)
+            db.session.commit()
+            print('POST')
+        except:
+            errors.append(
+                "Error while creating paper."
+            )
     elif request.method == 'GET':
-        # TODO User Instanz richtig filtern und als JSON zurückgeben
-        print('GET')
-    elif request.method == 'PUT':
-        print('PUT')
-    else: #DELETE
-        print('DELETE')
-    return make_response(jsonify(message='Paper')), 200
+        if 'title' in request.values:
+            try:
+                paper = db.session.query(Paper).filter_by(username=request.values['title']).first()
+                return make_response(paper.serialize)
+            except:
+                errors.append(
+                    "Error while retrieving paper."
+                )
+        else:
+            papers = db.session.query(Paper).all()
+            return make_response(jsonify([paper.serialize for paper in papers]))
+    elif request.method == 'DELETE':
+        if 'username' in request.values:
+            try:
+                paper = db.session.query(Paper).filter_by(username=request.values['title']).first()
+                db.session.delete(paper)
+                db.session.commit()
+            except:
+                errors.append(
+                    "Error while deleting paper."
+                )
+    

@@ -31,6 +31,18 @@ class Paper(db.Model):
             setattr(self, key, value)
         db.session.commit()
 
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+           'id'           : self.id,
+           'author_id'    : self.author_id,
+           'title'        : self.title,
+           'content'      : self.content,
+           'last_modified': self.last_modified,
+           'created'      : self.created
+       }
+
     def __repr__(self):
         return 'Paper: {}'.format(self.title)
 
