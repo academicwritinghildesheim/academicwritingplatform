@@ -52,7 +52,6 @@
     </mat-list>
 
   </mat-sidenav>
-  <!-- Main-Content -->
   <mat-grid-list cols="2" rowHeight="50px">
     <mat-grid-tile class="menu" rowspan="1">
       <h2>Editor</h2>
@@ -78,9 +77,11 @@
       </button>
     </mat-grid-tile>
     <mat-grid-tile rowspan="15">
+      <textarea class="variable-textarea" [(ngModel)]="markdown"></textarea>
     </mat-grid-tile>
-    <mat-grid-tile rowspan="15"></mat-grid-tile>
+    <mat-grid-tile rowspan="15">
+      <markdown class="variable-binding" [data]="markdown"></markdown>
+    </mat-grid-tile>
   </mat-grid-list>
-  <!-- Main-Content -->
 </mat-sidenav-container>
 

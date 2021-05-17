@@ -13,6 +13,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MarkdownModule } from 'ngx-markdown';
+import { FormsModule } from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import { CountDownComponent } from './editor/components/count-down/count-down.component';
 
@@ -33,9 +35,11 @@ import { CountDownComponent } from './editor/components/count-down/count-down.co
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatTooltipModule,
     MatDialogModule
 
+    MatTooltipModule,
+    FormsModule,
+    MarkdownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

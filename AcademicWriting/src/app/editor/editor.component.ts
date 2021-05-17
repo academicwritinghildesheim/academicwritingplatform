@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-editor',
@@ -8,7 +8,26 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class EditorComponent {
   constructor(public dialog: MatDialog) {}
+  markdown = `## Markdown __rulez__!
 
+### Syntax highlight
+\`\`\`typescript
+const language = 'typescript';
+\`\`\`
+
+### Lists
+1. Ordered list
+2. Another bullet point
+   - Unordered list
+   - Another unordered bullet
+
+### Blockquote
+> Blockquote to the max`;
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
   openDialog() {
     this.dialog.open(DialogElementsExampleDialog);
   }
