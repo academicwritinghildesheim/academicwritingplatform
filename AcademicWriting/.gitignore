@@ -48,3 +48,7 @@ Thumbs.db
 # Server Files
 venv/
 migrations/
+
+# pycache
+*.pyc
+__pycache__
