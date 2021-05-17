@@ -35,8 +35,7 @@ import { CountDownComponent } from './editor/components/count-down/count-down.co
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatDialogModule
-
+    MatDialogModule,
     MatTooltipModule,
     FormsModule,
     MarkdownModule.forRoot()

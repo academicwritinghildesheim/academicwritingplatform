@@ -1,5 +1,5 @@
 import {MatDialog} from '@angular/material/dialog';
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-editor',
@@ -23,16 +23,12 @@ const language = 'typescript';
 
 ### Blockquote
 > Blockquote to the max`;
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
   openDialog() {
     this.dialog.open(DialogElementsExampleDialog);
-  }
  
 }
+}
+
 @Component({
   selector: 'dialog-elements-example-dialog',
   templateUrl: 'dialog-elements-example-dialog.html',
