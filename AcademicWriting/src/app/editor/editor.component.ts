@@ -1,5 +1,5 @@
-import {MatDialog} from '@angular/material/dialog';
-import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-editor',
@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class EditorComponent {
   constructor(public dialog: MatDialog) {}
+
   markdown = `## Markdown __rulez__!
 
 ### Syntax highlight
@@ -24,25 +25,19 @@ const language = 'typescript';
 ### Blockquote
 > Blockquote to the max`;
 
-  constructor() {
+  public openDialog(): void {
+    this.dialog.open(DialogElementsExampleDialogComponent);
   }
-
-  ngOnInit(): void {
-  openDialog() {
-    this.dialog.open(DialogElementsExampleDialog);
-  }
- 
 }
+
 @Component({
-  selector: 'dialog-elements-example-dialog',
+  selector: 'app-dialog-elements-example-dialog',
   templateUrl: 'dialog-elements-example-dialog.html',
 })
-export class DialogElementsExampleDialog {
-  constructor(public dialog: MatDialog) {}
-  
- closeDialog(){
-   //schließt alle dialogs. mit dialogRef lösen?
-    this.dialog.closeAll()
-  }
+export class DialogElementsExampleDialogComponent {
+  constructor(public dialogRef: MatDialogRef<DialogElementsExampleDialogComponent>) {}
 
+  public closeDialog(): void {
+    this.dialogRef.close();
+  }
 }
