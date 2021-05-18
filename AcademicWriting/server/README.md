@@ -22,19 +22,20 @@ psql postgres -U username
 3. Environment Variablen erstellen:
 
 ```bash
-SECRET_KEY=XXXX
-DATABASE_URL=postgresql+psycopg2://username:password@localhost:5432/academicwriting_db
+export SECRET_KEY=XXXX
+export DATABASE_URL=postgresql+psycopg2://username:password@localhost:5432/academicwriting_db
+export APP_SETTINGS=api.config.DevelopmentConfig
 ```
 
 4. Datenbank erstellen:
 
 ```bash
-python manage.py db init 
+python manage.py db init
 python manage.py db migrate
 python manage.py db upgrade
 ```
 
-5. Flask-Server starten: 
+5. Flask-Server starten:
 
 ```bash
 python run.py
@@ -46,20 +47,20 @@ Packageliste erstellen:
 pip freeze > requirements.txt
 ```
 
-API-Route = http://127.0.0.1:5000/api/hello_world
+API-Route = http://127.0.0.1:5000/api/
 
 
 
 
 ## Hilfreiche Links
 
-### Datenbank 
+### Datenbank
 
 https://realpython.com/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/
 https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb
 
 
-### Authentifizierung 
+### Authentifizierung
 
 https://realpython.com/token-based-authentication-with-flask/
 
