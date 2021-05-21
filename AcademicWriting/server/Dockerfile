@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD gunicorn -b 0.0.0.0:8080 run
+CMD gunicorn -b 0.0.0.0:5000 run
