@@ -47,7 +47,7 @@ class Paper(db.Model):
         return 'Paper: {}'.format(self.title)
 
 
-class PaperSchema(ma.SQLAlchemySchema):
+class PaperSchema(ma.Schema):
     id = ma.Integer(required=False, dump_only=True)
     author_id = ma.String(required=True)
     title = ma.String(required=True)

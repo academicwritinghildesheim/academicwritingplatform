@@ -52,7 +52,7 @@ class User(db.Model):
            'email'   : self.email
        }
 
-class UserSchema(ma.SQLAlchemySchema):
+class UserSchema(ma.Schema):
     id = ma.Integer(required=False, dump_only=True)
     username = ma.String(required=True)
     email = ma.String(required=True)
