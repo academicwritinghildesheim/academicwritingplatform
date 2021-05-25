@@ -38,6 +38,17 @@ def user():
                 db.session.delete(user)
                 db.session.commit()
             except:
+                print('Error DELETE')
                 errors.append(
                     "Error while deleting user."
                 )
+    elif request.method == 'PUT':
+        try:
+            user = db.session.query(User).filter_by(username=request.values['username']).first()
+            user.username = User(username=request.values['username'], email=request.values['email'], password=request.values['password'])
+            db.session.commit()
+            return make_response(user.serialize)
+        except:
+            errors.append(
+                "Error while retrieving user."
+            )

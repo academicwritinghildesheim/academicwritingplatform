@@ -22,7 +22,7 @@ def paper():
     elif request.method == 'GET':
         if 'title' in request.values:
             try:
-                paper = db.session.query(Paper).filter_by(username=request.values['title']).first()
+                paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
                 return make_response(paper.serialize)
             except:
                 errors.append(
@@ -32,13 +32,23 @@ def paper():
             papers = db.session.query(Paper).all()
             return make_response(jsonify([paper.serialize for paper in papers]))
     elif request.method == 'DELETE':
-        if 'username' in request.values:
+        if 'title' in request.values:
             try:
-                paper = db.session.query(Paper).filter_by(username=request.values['title']).first()
+                paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
                 db.session.delete(paper)
                 db.session.commit()
             except:
                 errors.append(
                     "Error while deleting paper."
+                )
+        elif request.method == 'PUT':
+            try:
+                paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
+                paper = Paper(author_id=request.values['author_id'], title=request.values['title'], content=request.values['content'])
+                db.session.commit()
+                return make_response(paper.serialize)
+            except:
+                errors.append(
+                    "Error while updating paper."
                 )
     
