@@ -16,10 +16,12 @@ def user():
             print(vars(new_user))
             db.session.add(new_user)
             db.session.commit()
-        except:
+            return make_response(jsonify({'success':True}), 200, {'ContentType':'application/json'})
+        except Exception as e:
             errors.append(
-                "Error while creating user."
+                "Error while creating user:" + str(e)
             )
+            return make_response(jsonify({'success':False}), 400, {'ContentType':'application/json'})
     elif request.method == 'GET':
         if 'username' in request.values:
             try:
@@ -27,10 +29,11 @@ def user():
                 user_schema = UserSchema()
                 user_json = user_schema.dumps(user)
                 return make_response(jsonify(user_json))
-            except:
+            except Exception as e:
                 errors.append(
-                    "Error while retrieving user."
+                    "Error while retrieving user:" + str(e)
                 )
+                return make_response(jsonify({'success':False}), 400, {'ContentType':'application/json'})
         else:
             users = db.session.query(User).all()
             user_schema = UserSchema()
@@ -42,11 +45,11 @@ def user():
                 user = db.session.query(User).filter_by(username=request.values['username']).first()
                 db.session.delete(user)
                 db.session.commit()
-            except:
-                print('Error DELETE')
+            except Exception as e:
                 errors.append(
-                    "Error while deleting user."
+                    "Error while deleting user:" + str(e)
                 )
+                return make_response(jsonify({'success':False}), 400, {'ContentType':'application/json'})
     elif request.method == 'PUT':
         try:
             user = db.session.query(User).filter_by(username=request.values['username']).first()
@@ -56,8 +59,9 @@ def user():
             db.session.commit()
             user_schema = UserSchema()
             user_json = user_schema.dumps(user)
-            return make_response(jsonify(user_json))
-        except:
+            return make_response(jsonify({'success':True}), 200, {'ContentType':'application/json'})
+        except Exception as e:
             errors.append(
-                "Error while updating user."
+                "Error while updating user:" + str(e)
             )
+            return make_response(jsonify({'success':False}), 400, {'ContentType':'application/json'})
