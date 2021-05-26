@@ -14,32 +14,36 @@ def paper():
             new_paper = Paper(author_id=request.values['author_id'], title=request.values['title'], content=request.values['content'])
             db.session.add(new_paper)
             db.session.commit()
+            paper_schema = PaperSchema()
+            paper_json = paper_schema.dumps(new_paper)
+            return make_response(jsonify(paper_json))
         except:
             errors.append(
                 "Error while creating paper."
             )
     elif request.method == 'GET':
-        if 'title' in request.values:
-            try:
+        try:
+            if 'title' in request.values:
                 paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
                 paper_schema = PaperSchema()
                 paper_json = paper_schema.dumps(paper)
                 return make_response(jsonify(paper_json))
-            except:
-                errors.append(
-                    "Error while retrieving paper."
-                )
-        else:
-            papers = db.session.query(Paper).all()
-            paper_schema = PapersSchema()
-            paper_json = [paper_schema.dumps(paper) for paper in papers]
-            return make_response(jsonify(paper_json))
+            else:
+                papers = db.session.query(Paper).all()
+                paper_schema = PaperSchema()
+                paper_json = [paper_schema.dumps(paper) for paper in papers]
+                return make_response(jsonify(paper_json))
+        except:
+            errors.append(
+                "error while retrieving user."
+            )       
     elif request.method == 'DELETE':
         if 'title' in request.values:
             try:
                 paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
                 db.session.delete(paper)
                 db.session.commit()
+                return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
             except:
                 errors.append(
                     "Error while deleting paper."
