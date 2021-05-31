@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Timer</h1>
+<div mat-dialog-content>Hier kannst du einen Timer stellen. Du wirst bei Ablauf der Zeit automatisch <br> mit einem Popup benachrichtigt, dass die Zeit abgelaufen ist.</div>
+    <div>
+        <br>
+<table>
+    <th>
+        <p>Stunden</p>
+    </th>
+    <th>
+        <p>Minuten</p>
+    </th>
+    <tr>
+        <td>
+            <mat-label>test</mat-label>
+            <input matInput type ="number" [(ngModel)]="stunden">
+        </td>
+        <td>
+            <input matInput type ="number" [(ngModel)]="minuten">
+        </td>
+    </tr>
+</table>
+<br>
+</div>
+
+<div *ngIf="isChecked">
+<app-count-down [stunden]="stunden" [minuten]="minuten" [countUporDown]="'down'" [ngStyle]="{'color':'black'}"> </app-count-down>
+</div>
+<button mat-raised-button (click)="startTimer()">Timer starten</button>
+<button mat-raised-button (click)="closeDialog()">Close</button>
