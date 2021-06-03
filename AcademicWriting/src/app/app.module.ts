@@ -19,6 +19,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {CountDownComponent} from './editor/components/count-down/count-down.component';
 import {DialogComponent} from './editor/components/dialog/dialog.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatTooltipModule,
     FormsModule,
     MatFormFieldModule,
+    MatDividerModule,
     MarkdownModule.forRoot()
   ],
   providers: [],

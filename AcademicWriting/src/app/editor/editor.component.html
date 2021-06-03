@@ -46,8 +46,12 @@
     <mat-toolbar class="sidenav-toolbar">
       <span class="file">Statistiken</span>
     </mat-toolbar>
-    <br>
     <mat-list>
+      <mat-list-item>
+        Seitenanzahl: {{pages.length}}
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <br>
       <mat-list-item>
         <app-count-down></app-count-down>
       </mat-list-item>
