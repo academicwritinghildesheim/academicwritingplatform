@@ -1,7 +1,9 @@
 <mat-toolbar>
   <span>Dokument</span>
   <span class="spacer"></span>
-  <button mat-button (click)="openDialog()">Launch dialog</button>
+  <button mat-button (click)="openDialog()" matTooltip="Timer stellen">
+  <mat-icon>alarm</mat-icon>
+</button>
   <button mat-icon-button (click)="sidenavLeft.toggle()" matTooltip="Dateiübersicht öffnen">
     <mat-icon>vertical_split</mat-icon>
   </button>
@@ -56,6 +58,10 @@
     <mat-grid-tile class="menu" rowspan="1">
       <h2>Editor</h2>
       <span class="spacer"></span>
+      <a href="https://www.markdownguide.org/cheat-sheet" target='_blank' style="color: black">
+      <button mat-icon-button matTooltip="Markdown Cheat Sheet">
+        <mat-icon>lightbulb</mat-icon>
+      </button></a>
       <button mat-icon-button matTooltip="Schriftfarbe">
         <mat-icon>format_color_text</mat-icon>
       </button>

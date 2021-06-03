@@ -4,7 +4,7 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {DialogElementsExampleDialogComponent, EditorComponent} from './editor/editor.component';
+import {EditorComponent} from './editor/editor.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card';
@@ -17,13 +17,15 @@ import {MarkdownModule} from 'ngx-markdown';
 import {FormsModule} from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {CountDownComponent} from './editor/components/count-down/count-down.component';
+import {DialogComponent} from './editor/components/dialog/dialog.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditorComponent,
     CountDownComponent,
-    DialogElementsExampleDialogComponent
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +41,7 @@ import {CountDownComponent} from './editor/components/count-down/count-down.comp
     MatDialogModule,
     MatTooltipModule,
     FormsModule,
+    MatFormFieldModule,
     MarkdownModule.forRoot()
   ],
   providers: [],
