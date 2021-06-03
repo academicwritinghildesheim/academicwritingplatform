@@ -39,7 +39,7 @@
       <mat-list-item> Dokument4</mat-list-item>
     </mat-list>
   </mat-sidenav>
-  
+
   <mat-sidenav #sidenavRight opened mode="side" opened class="side-nav" position="end">
     <mat-toolbar class="sidenav-toolbar">
       <span class="file">Statistiken</span>
@@ -47,7 +47,7 @@
     <br>
     <mat-list>
       <mat-list-item>
-        <app-count-down> </app-count-down>
+        <app-count-down></app-count-down>
       </mat-list-item>
     </mat-list>
 
@@ -76,12 +76,30 @@
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </mat-grid-tile>
-    <mat-grid-tile rowspan="15">
-      <textarea class="variable-textarea" [(ngModel)]="markdown"></textarea>
+    <mat-grid-tile [rowspan]="14 * (currentPage+1)">
+      <div class="page" *ngFor="let page of pages; index as i"
+           [style.height]="sizePage.height + 'cm'"
+           [style.width]="sizePage.width + 'cm'"
+           (click)="clickPage(i)">
+        <div class="editor"
+             [style.paddingTop]="paddingPage.top + 'cm'"
+             [style.paddingRight]="paddingPage.right + 'cm'"
+             [style.paddingBottom]="paddingPage.bottom + 'cm'"
+             [style.paddingLeft]="paddingPage.left + 'cm'"
+             [id]="'editor-' + i" contenteditable="true"
+             (input)="inputContent($event['data'], i)">
+        </div>
+      </div>
     </mat-grid-tile>
-    <mat-grid-tile rowspan="15">
-      <markdown class="variable-binding" [data]="markdown"></markdown>
+    <mat-grid-tile [rowspan]="14 * (currentPage+1)">
+      <div class="page" *ngFor="let page of pages" [style.height]="sizePage.height + 'cm'"
+           [style.width]="sizePage.width + 'cm'">
+        <div markdown class="content" [style.paddingTop]="paddingPage.top + 'cm'"
+             [style.paddingRight]="paddingPage.right + 'cm'"
+             [style.paddingBottom]="paddingPage.bottom + 'cm'"
+             [style.paddingLeft]="paddingPage.left + 'cm'"
+             [data]="page?.innerText"></div>
+      </div>
     </mat-grid-tile>
   </mat-grid-list>
 </mat-sidenav-container>
-
