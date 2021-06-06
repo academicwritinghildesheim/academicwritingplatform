@@ -42,15 +42,7 @@ class User(db.Model):
             return True
         else:
             return False
-
-    @property
-    def serialize(self):
-       """Return object data in easily serializable format"""
-       return {
-           'id'      : self.id,
-           'username': self.username,
-           'email'   : self.email
-       }
+            
 
 class UserSchema(ma.Schema):
     id = ma.Integer(required=False, dump_only=True)

@@ -53,3 +53,8 @@ migrations/
 # pycache
 *.pyc
 __pycache__/
+
+# pandoc
+pandoc*
+demo.pdf
+demo.md

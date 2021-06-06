@@ -27,14 +27,14 @@ def create_app(config_filename=None, static_folder=None, static_url_path=None):
     ma.init_app(app)
     bcrypt.init_app(app)
 
-    from .routes import hello_world
-    app.register_blueprint(hello_world.bp)
-
     from .routes import user_route
     app.register_blueprint(user_route.bp)
 
     from .routes import paper_route
     app.register_blueprint(paper_route.bp)
+
+    from .routes import convert_route
+    app.register_blueprint(convert_route.bp)
 
     @app.route('/')
     def index():

@@ -38,7 +38,16 @@ python manage.py db migrate
 python manage.py db upgrade
 ```
 
-5. Flask-Server starten:
+5. Pandoc
+
+```python
+from pypandoc.pandoc_download import download_pandoc
+
+
+download_pandoc(version='2.0')
+```
+
+6. Flask-Server starten:
 
 ```bash
 python run.py

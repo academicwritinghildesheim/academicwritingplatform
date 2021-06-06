@@ -2,7 +2,6 @@ from api.database.user import UserSchema
 from flask import Blueprint, jsonify, make_response, request
 from api.database.user import User, user_schema, users_schema
 from api import db
-from sqlalchemy.orm import sessionmaker
 
 errors = []
 
