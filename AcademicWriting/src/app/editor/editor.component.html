@@ -1,7 +1,9 @@
 <mat-toolbar>
   <span>Dokument</span>
   <span class="spacer"></span>
-  <button mat-button (click)="openDialog()">Launch dialog</button>
+  <button mat-button (click)="openDialog()" matTooltip="Timer stellen">
+  <mat-icon>alarm</mat-icon>
+</button>
   <button mat-icon-button (click)="sidenavLeft.toggle()" matTooltip="Dateiübersicht öffnen">
     <mat-icon>vertical_split</mat-icon>
   </button>
@@ -39,15 +41,19 @@
       <mat-list-item> Dokument4</mat-list-item>
     </mat-list>
   </mat-sidenav>
-  
+
   <mat-sidenav #sidenavRight opened mode="side" opened class="side-nav" position="end">
     <mat-toolbar class="sidenav-toolbar">
       <span class="file">Statistiken</span>
     </mat-toolbar>
-    <br>
     <mat-list>
       <mat-list-item>
-        <app-count-down> </app-count-down>
+        Seitenanzahl: {{pages.length}}
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <br>
+      <mat-list-item>
+        <app-count-down></app-count-down>
       </mat-list-item>
     </mat-list>
 
@@ -56,16 +62,20 @@
     <mat-grid-tile class="menu" rowspan="1">
       <h2>Editor</h2>
       <span class="spacer"></span>
+      <a href="https://www.markdownguide.org/cheat-sheet" target='_blank' style="color: black">
+      <button mat-icon-button matTooltip="Markdown Cheat Sheet">
+        <mat-icon>lightbulb</mat-icon>
+      </button></a>
       <button mat-icon-button matTooltip="Schriftfarbe">
         <mat-icon>format_color_text</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Fett">
+      <button mat-icon-button matTooltip="Fett: **Text**">
         <mat-icon>format_bold</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Kursiv">
+      <button mat-icon-button matTooltip="Kursiv: *Text*">
         <mat-icon>format_italic</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Schriftgröße">
+      <button mat-icon-button matTooltip="Schriftgröße: # H1, ## H2, ### H3...">
         <mat-icon>format_size</mat-icon>
       </button>
     </mat-grid-tile>
@@ -76,12 +86,30 @@
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </mat-grid-tile>
-    <mat-grid-tile rowspan="15">
-      <textarea class="variable-textarea" [(ngModel)]="markdown"></textarea>
+    <mat-grid-tile [rowspan]="14 * (currentPage+1)">
+      <div class="page" *ngFor="let page of pages; index as i"
+           [style.height]="sizePage.height + 'cm'"
+           [style.width]="sizePage.width + 'cm'"
+           (click)="clickPage(i)">
+        <div class="editor"
+             [style.paddingTop]="paddingPage.top + 'cm'"
+             [style.paddingRight]="paddingPage.right + 'cm'"
+             [style.paddingBottom]="paddingPage.bottom + 'cm'"
+             [style.paddingLeft]="paddingPage.left + 'cm'"
+             [id]="'editor-' + i" contenteditable="true"
+             (input)="inputContent($event['data'], i)">
+        </div>
+      </div>
     </mat-grid-tile>
-    <mat-grid-tile rowspan="15">
-      <markdown class="variable-binding" [data]="markdown"></markdown>
+    <mat-grid-tile [rowspan]="14 * (currentPage+1)">
+      <div class="page" *ngFor="let page of pages" [style.height]="sizePage.height + 'cm'"
+           [style.width]="sizePage.width + 'cm'">
+        <div markdown class="content" [style.paddingTop]="paddingPage.top + 'cm'"
+             [style.paddingRight]="paddingPage.right + 'cm'"
+             [style.paddingBottom]="paddingPage.bottom + 'cm'"
+             [style.paddingLeft]="paddingPage.left + 'cm'"
+             [data]="page?.innerText"></div>
+      </div>
     </mat-grid-tile>
   </mat-grid-list>
 </mat-sidenav-container>
-
