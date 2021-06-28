@@ -1,6 +1,7 @@
 import {MatDialog} from '@angular/material/dialog';
-import {AfterViewChecked, Component} from '@angular/core';
+import {AfterViewChecked, Component, ViewChild, ElementRef} from '@angular/core';
 import {DialogComponent} from './components/dialog/dialog.component';
+
 
 @Component({
   selector: 'app-editor',
@@ -201,6 +202,15 @@ export class EditorComponent implements AfterViewChecked {
       this.runAfterViewChecked = false;
     }
   }
+  wordCount: any;
+
+  /* @ViewChild("text") text: ElementRef;
+  words: any;
+  wordCounter() {
+    //alert(this.text.nativeElement.value)
+    this.wordCount = this.text ? this.text.nativeElement.value.split(/\s+/) : 0;
+    this.words = this.wordCount ? this.wordCount.length : 0;
+  } */
 }
 
 

@@ -1,0 +1,46 @@
+<!-- <p>color-picker works!</p> -->
+<div class="color-picker">
+  <div class="summary-info" (click)="toggleColors()">
+    <div class="info">
+      <p class="style">{{ heading }}</p>
+      <!-- <p class="style-value">{{ color }}</p> -->
+    </div>
+
+    <!--   <div class="circle" [ngStyle]="{'background': color}"></div>
+  </div> auskommentiert "macht weißen Kreis für "hintergrund"-->
+
+    <!-- <div class="opened" *ngIf="show"> -->
+    <!-- <div class="colors"> -->
+    <!-- style="background: #fff"></div>  -->
+    <!-- <div class="circle" style="background: #000105"></div>
+    <div class="circle" style="background: #3e6158"></div>
+    <div class="circle" style="background: #3f7a89"></div>
+    <div class="circle" style="background: #96c582"></div>
+    <div class="circle" style="background: #b7d5c4"></div>
+    <div class="circle" style="background: #bcd6e7"></div>
+    <div class="circle" style="background: #7c90c1"></div>
+    <div class="circle" style="background: #9d8594"></div>
+    <div class="circle" style="background: #dad0d8"></div> -->
+    <!-- </div> -->
+    <div class="hex-code">
+      <p>Klicken für Hex Code</p>
+      <div class="g-input">
+        <input type="text" maxlenght="7" [value]="color" (keyup)="changeColorManual(paintInput.value)"
+          (keydown.enter)="toggleColors()" #paintInput />
+      </div>
+      <div (click)="changeColor(paint)" *ngFor="let paint of defaultColors" class="circle"
+        [ngStyle]="{'background': paint}">
+      </div>
+      <!-- <div *ngFor="let paint of defaultColors" class="circle" [ngStyle]="{'background': paint}"></div> 1juni -->
+      <!-- <div class="hex-code"></div> //25mai auskommentiert-->
+      <!-- <p>Hex Code</p> -->
+      <!-- <div class="g-input">
+      <input type="text" maxlength="7" [value]="color" (keyup)="changeColorManual(paintInput.value)"
+        (keydown.enter)="toggleColors()" #paintInput />
+    </div> //dieser Block erzeugt ein Inputschreibbereich-->
+    </div>
+  </div>
+
+
+  <!-- <div (click)="changeColor(paint)" *ngFor="let paint of defaultColors" class="circle" [ngStyle]="{'background': paint}">
+</div>  -->

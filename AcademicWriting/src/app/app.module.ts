@@ -1,3 +1,4 @@
+import { ColorPickerComponent } from './editor/color-picker/color-picker.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
@@ -20,13 +21,15 @@ import {CountDownComponent} from './editor/components/count-down/count-down.comp
 import {DialogComponent} from './editor/components/dialog/dialog.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditorComponent,
     CountDownComponent,
-    DialogComponent
+    DialogComponent,
+    ColorPickerComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import {MatDividerModule} from '@angular/material/divider';
     FormsModule,
     MatFormFieldModule,
     MatDividerModule,
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
