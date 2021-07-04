@@ -44,6 +44,7 @@ def user():
                 user = db.session.query(User).filter_by(username=request.values['username']).first()
                 db.session.delete(user)
                 db.session.commit()
+                return make_response(jsonify({'success':True}), 200, {'ContentType':'application/json'})
             except Exception as e:
                 errors.append(
                     "Error while deleting user:" + str(e)
