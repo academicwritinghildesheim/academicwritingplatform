@@ -1,0 +1,34 @@
+<div class="login-background">
+  <div class="login-form">
+    <h3>Login - Academic Writing Editor</h3>
+    <div class="login-info">
+    <h4>Dein persönlicher Zugang zu dem Academic Writing Editor - </h4><a href="">Hier anmelden</a>
+    </div>
+    <div class="login-div">
+      <form class="login-form-fields">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input type="email" matInput [formControl]="emailFormControl" placeholder="test@gmail.com">
+          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            Email is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Passwort</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'">
+          <mat-error *ngIf="passwordFormControl.hasError('required')">
+            Password is required
+          </mat-error>
+          <button class="visibility-button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <button class="login-button" mat-raised-button color="primary">Anmelden</button>
+      </form>
+    </div>
+  </div>
+</div>
