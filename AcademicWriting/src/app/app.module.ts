@@ -1,4 +1,4 @@
-import { ColorPickerComponent } from './editor/color-picker/color-picker.component';
+import {ColorPickerComponent} from './editor/color-picker/color-picker.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
@@ -15,13 +15,15 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MarkdownModule} from 'ngx-markdown';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {CountDownComponent} from './editor/components/count-down/count-down.component';
 import {DialogComponent} from './editor/components/dialog/dialog.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatMenuModule} from '@angular/material/menu';
+import {LoginComponent} from './login/login.component';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import {MatMenuModule} from '@angular/material/menu';
     EditorComponent,
     CountDownComponent,
     DialogComponent,
-    ColorPickerComponent
+    ColorPickerComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,9 @@ import {MatMenuModule} from '@angular/material/menu';
     MatFormFieldModule,
     MatDividerModule,
     MarkdownModule.forRoot(),
-    MatMenuModule
+    MatMenuModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
