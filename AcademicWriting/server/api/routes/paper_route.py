@@ -1,86 +1,91 @@
 from flask import Blueprint, jsonify, make_response, request
-from api.database.paper import Paper, PaperSchema
-from api import db
+from api.database.paper import Paper, papers_schema, paper_schema
 
-errors = []
 
 bp = Blueprint('paper', __name__, url_prefix='/api')
 
 
-@bp.route('/paper', methods=['POST', 'GET', 'PUT', 'DELETE'])
-def paper():
-    if request.method == 'POST':
-        try:
-            new_paper = Paper(author_id=request.values['author_id'],
-                              title=request.values['title'],
-                              content=request.values['content'])
+@bp.route('/paper', methods=['GET'])
+def get_paper():
+    """
+    example: GET: host/api/paper?id=0
+    """
 
-            db.session.add(new_paper)
-            db.session.commit()
-            paper_schema = PaperSchema()
-            paper_json = paper_schema.dumps(new_paper)
+    id = request.args.get('id', default=None, type=int)
+    all = request.args.get('all', default=False, type=bool)
 
-            return make_response(jsonify({'success':True}),
-                                 200, {'ContentType':'application/json'})
-        except Exception as e:
-            errors.append(
-                "Error while creating paper:" + str(e)
-            )
-            return make_response(jsonify({'success':False}),
-                                 400, {'ContentType':'application/json'})
-    elif request.method == 'GET':
-        try:
-            if 'title' in request.values:
+    if all:
+        all_paper = Paper.get_all()
+        result = papers_schema.dump(all_paper)
 
-                paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
-                paper_schema = PaperSchema()
-                paper_json = paper_schema.dumps(paper)
+        return jsonify(result.data), 200
 
-                return make_response(jsonify(paper_json))
-            else:
-                papers = db.session.query(Paper).all()
-                paper_schema = PaperSchema()
-                paper_json = [paper_schema.dumps(paper) for paper in papers]
+    if not all:
 
-                return make_response(jsonify(paper_json))
-        except Exception as e:
-            errors.append(
-                "error while retrieving paper:" + str(e)
-            )
-            return make_response(jsonify({'success':False}),
-                                 400, {'ContentType':'application/json'})
-    elif request.method == 'DELETE':
-        if 'title' in request.values:
-            try:
-                paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
+        paper = Paper.query.get(id)
+        if not paper:
+            return jsonify({'success': False}), 400, {'ContentType': 'application/json'}
 
-                db.session.delete(paper)
-                db.session.commit()
+        return paper_schema.jsonify(paper), 200
 
-                return make_response(jsonify({'success':True}),
-                                     200, {'ContentType':'application/json'})
-            except Exception as e:
-                errors.append(
-                    "Error while deleting paper:" + str(e)
-                )
-                return make_response(jsonify({'success':False}),
-                                     400, {'ContentType':'application/json'})
-        elif request.method == 'PUT':
-            try:
-                paper = db.session.query(Paper).filter_by(title=request.values['title']).first()
 
-                paper.author_id = request.values['author_id']
-                paper.title = request.values['title']
-                paper.content = request.values['content']
-                db.session.commit()
-                paper_schema = PaperSchema()
-                paper_json = paper_schema.dumps(paper)
-                
-                return make_response(jsonify({'success':True}),
-                                     200, {'ContentType':'application/json'})
-            except Exception as e:
-                errors.append(
-                    "Error while updating paper:" + str(e)
-                )
-                return make_response(jsonify({'success':False}),
-                                     400, {'ContentType':'application/json'})
+@bp.route('/paper', methods=['POST'])
+def add_paper():
+    """
+    example: POST: host/api/paper
+    """
+
+    if not request.is_json:
+        return jsonify({'success': False}), 400, {'ContentType': 'application/json'}
+
+    paper, errors = paper_schema.load(request.get_json())
+    if errors:
+        return make_response(jsonify(errors)), 400
+
+    paper.save()
+
+    return make_response(jsonify(status='success')), 200
+
+
+@bp.route('/paper', methods=['PUT'])
+def user_update():
+    """
+    example: PUT: host/api/paper?id=1
+    """
+
+    id = request.args.get('id', default=None, type=int)
+
+    paper = Paper.query.get(id)
+
+    if not paper:
+        return jsonify({'success': False}), 400, {'ContentType': 'application/json'}
+
+    data = request.get_json()
+    data.pop('id', None)
+
+    errors = paper_schema.validate(data, partial=True)
+
+    if errors:
+        return make_response(jsonify(errors)), 400
+
+    paper.update(**data)
+
+    return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@bp.route('/paper', methods=['DELETE'])
+def user_delete():
+    """
+    example: DELETE: host/api/paper?id=1
+    """
+
+    id = request.args.get('id', default=None, type=int)
+
+    paper = Paper.query.get(id)
+
+    if not paper:
+        return jsonify({'success': False}), 400, {'ContentType': 'application/json'}
+
+    paper.delete()
+
+    return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
