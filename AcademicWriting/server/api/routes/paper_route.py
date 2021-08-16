@@ -8,7 +8,7 @@ bp = Blueprint('paper', __name__, url_prefix='/api')
 @bp.route('/paper', methods=['GET'])
 def get_paper():
     """
-    example: GET: host/api/paper?id=0
+    example: GET: host/api/paper?id=1
     """
 
     id = request.args.get('id', default=None, type=int)
