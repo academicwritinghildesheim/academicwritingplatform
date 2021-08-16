@@ -9,6 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(128), unique=False, nullable=False)
     password = db.Column(db.String(), nullable=False)
+    token = db.relationship('Token', backref='access_token', cascade='all,delete', lazy=True)
     papers = db.relationship(Paper, backref='author', cascade='all,delete', lazy=True)
 
     def __init__(self, username, email, password):
@@ -42,7 +43,7 @@ class User(db.Model):
             return True
         else:
             return False
-            
+
 
 class UserSchema(ma.Schema):
     id = ma.Integer(required=False, dump_only=True)

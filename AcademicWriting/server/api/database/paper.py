@@ -32,8 +32,8 @@ class Paper(db.Model):
         db.session.commit()
 
     @staticmethod
-    def get_all():
-        return Paper.query.all()
+    def get_all(username):
+        return Paper.query.filter_by(author_id=username).all()
 
     def __repr__(self):
         return 'Paper: {}'.format(self.title)
