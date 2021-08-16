@@ -50,6 +50,7 @@
       <mat-list-item>
         Seitenanzahl: {{pages.length}}
       </mat-list-item>
+      <mat-list-item><div>Wortanzahl:<span style="margin-right:1rem" id="wordCount">{{ wordcountlaenge }}</span></div></mat-list-item>
       <mat-divider></mat-divider>
       <br>
       <mat-list-item>
@@ -102,7 +103,7 @@
              [style.paddingBottom]="paddingPage.bottom + 'cm'"
              [style.paddingLeft]="paddingPage.left + 'cm'"
              [id]="'editor-' + i" contenteditable="true"
-             (input)="inputContent($event['data'], i)">
+             (input)="inputContent($event['data'], i); wordCounter(i)">
         </div>
       </div>
     </mat-grid-tile>
@@ -113,7 +114,8 @@
              [style.paddingRight]="paddingPage.right + 'cm'"
              [style.paddingBottom]="paddingPage.bottom + 'cm'"
              [style.paddingLeft]="paddingPage.left + 'cm'"
-             [data]="page?.innerText"></div>
+             [data]="page?.innerText">
+            </div>
       </div>
     </mat-grid-tile>
   </mat-grid-list>

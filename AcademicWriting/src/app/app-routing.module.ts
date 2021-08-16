@@ -4,8 +4,8 @@ import {EditorComponent} from './editor/editor.component';
 import {LoginComponent} from './login/login.component';
 
 const routes: Routes = [
-  {path: 'editor', component: EditorComponent},
-  {path: '', component: LoginComponent}
+  {path: '', component: EditorComponent},
+  // {path: '', component: LoginComponent}
 ];
 
 @NgModule({
