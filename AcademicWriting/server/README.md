@@ -47,6 +47,14 @@ from pypandoc.pandoc_download import download_pandoc
 download_pandoc(version='2.0')
 ```
 
+5. Odenet
+
+Download repository https://github.com/hdaSprachtechnologie/odenet
+cd into the directory where setup.py is located and execute 
+```bash
+pip install .
+```
+
 6. Flask-Server starten:
 
 ```bash
