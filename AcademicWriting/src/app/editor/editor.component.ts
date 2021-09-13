@@ -1,6 +1,7 @@
-import {MatDialog} from '@angular/material/dialog';
-import {AfterViewChecked, Component} from '@angular/core';
-import {DialogComponent} from './components/dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AfterViewChecked, Component } from '@angular/core';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { MarkdownService } from 'ngx-markdown';
 
 
 @Component({
@@ -9,7 +10,7 @@ import {DialogComponent} from './components/dialog/dialog.component';
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements AfterViewChecked {
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private markdownService: MarkdownService) {
   }
 
   markdown = `# Markdown Cheat Sheet
@@ -115,6 +116,24 @@ export class EditorComponent implements AfterViewChecked {
   - [ ] Contact the media
   `;
 
+  
+wordcountlaenge = 0;
+  public wordList: string[];
+  
+  public wordCounter(pageIndex: number): void {
+ let wordcountlaenge = 0;
+    for (let i = 0; i < pageIndex + 1; i++) {
+      const html = this.markdownService.compile(this.pages[i].innerText);
+      const text = html.replace(/<[^>]*>/g, '').toString() //
+        .replace(/&#160;/g, ' ') //leerzeichen soll als ' ' angezeigt werden
+        .replace(/&#10;/g, ' '); //Zeilenumbruch soll als ' ' angezeigt werden
+      this.wordList = text ? text.split(/\s+/) : []; //Wörterliste
+      wordcountlaenge += this.wordList.length -1;
+     
+    }
+    this.wordcountlaenge = wordcountlaenge;
+  }
+
   public sizePage = {
     width: 13,
     height: 18
@@ -154,6 +173,7 @@ export class EditorComponent implements AfterViewChecked {
     this.pages[i].htmlContent = this.element.innerHTML;
     this.pages[i].innerText = this.element.innerText.toString();
 
+
     if (Number(heightContent.toFixed(1)) > this.sizePage.height) {
       this.currentChar = char;
       this.pages[i].full = true;
@@ -167,10 +187,14 @@ export class EditorComponent implements AfterViewChecked {
       this.currentPage = i + 1;
       this.runAfterViewChecked = true;
     }
+    // this.wordCounter(i)
   }
+
 
   public ngAfterViewChecked(): void {
     document.getElementById('editor-' + this.currentPage).focus();
+
+
     if (this.runAfterViewChecked) {
       if (this.currentChar) {
         let str = this.pages[this.currentPage - 1].htmlContent;

@@ -31,6 +31,10 @@ class Paper(db.Model):
             setattr(self, key, value)
         db.session.commit()
 
+    @staticmethod
+    def get_all():
+        return Paper.query.all()
+
     def __repr__(self):
         return 'Paper: {}'.format(self.title)
 
