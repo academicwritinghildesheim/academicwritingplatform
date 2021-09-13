@@ -24,6 +24,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatMenuModule} from '@angular/material/menu';
 import {LoginComponent} from './login/login.component';
 import {MatInputModule} from '@angular/material/input';
+import {HttpClientModule} from '@angular/common/http';
+import { RegistrierungsDialogComponent } from './registrierungs-dialog/registrierungs-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import {MatInputModule} from '@angular/material/input';
     CountDownComponent,
     DialogComponent,
     ColorPickerComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrierungsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import {MatInputModule} from '@angular/material/input';
     MarkdownModule.forRoot(),
     MatMenuModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
