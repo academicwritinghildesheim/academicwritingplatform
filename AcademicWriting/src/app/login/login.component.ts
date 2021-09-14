@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
-import {MatDialog} from '@angular/material/dialog';
-import {RegistrierungsDialogComponent} from '../registrierungs-dialog/registrierungs-dialog.component';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { RegistrierungsDialogComponent } from '../registrierungs-dialog/registrierungs-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +33,21 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+    this.http.post('https://academicwritinghildesheim.herokuapp.com/api/auth/login',
+      { username: this.usernameFormControl.value, password: this.passwordFormControl.value }, httpOptions)
+      .subscribe((user: any) => {
+        console.log(user);
+        localStorage.setItem('access_token', user.access_token);
+        console.log(user)
+      });
+
+
   }
 
   public registrieren(): void {

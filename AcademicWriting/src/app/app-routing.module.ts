@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {EditorComponent} from './editor/editor.component';
-import {LoginComponent} from './login/login.component';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { EditorComponent } from './editor/editor.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  {path: '', component: EditorComponent},
-  // {path: '', component: LoginComponent}
+  //{path: '', component: EditorComponent},
+  { path: '', component: LoginComponent }
 ];
 
 @NgModule({

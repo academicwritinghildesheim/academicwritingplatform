@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormControl, Validators} from '@angular/forms';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-registrierungs-dialog',
@@ -12,7 +12,7 @@ export class RegistrierungsDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<RegistrierungsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, private readonly http: HttpClient) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData, private readonly http: HttpClient) { }
 
   public hide = true;
 
@@ -40,14 +40,11 @@ export class RegistrierungsDialogComponent implements OnInit {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:4200',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE, PATCH',
-        'Access-Control-Allow-Headers': 'Content-Type'
       })
     };
 
     this.http.post('https://academicwritinghildesheim.herokuapp.com/api/user',
-      {username: this.usernameFormControl.value, email: this.emailFormControl.value, password: this.passwordFormControl.value}, httpOptions)
+      { username: this.usernameFormControl.value, email: this.emailFormControl.value, password: this.passwordFormControl.value }, httpOptions)
       .subscribe(user => {
         console.log(user);
       });
