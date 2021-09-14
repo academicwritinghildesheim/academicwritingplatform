@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <span>Dokument</span>
+  <span>Dokument</span> <app-api></app-api>
   <span class="spacer"></span>
   <button mat-button (click)="openDialog()" matTooltip="Timer stellen">
   <mat-icon>alarm</mat-icon>
@@ -9,10 +9,11 @@
   </button>
   <button mat-icon-button (click)="sidenavRight.toggle()" matTooltip="Statistiken öffnen">
     <mat-icon>analytics</mat-icon>
-  </button>
+  </button> 
   <button mat-icon-button matTooltip="Suche">
     <mat-icon>search</mat-icon>
   </button>
+
 </mat-toolbar>
 
 <mat-sidenav-container class="container">
@@ -92,7 +93,10 @@
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </mat-grid-tile>
-    <mat-grid-tile [rowspan]="14 * (currentPage+1)">
+  <mat-grid-tile [rowspan]=14>
+    <app-api></app-api>
+  </mat-grid-tile>
+    <!-- <mat-grid-tile [rowspan]="14 * (currentPage+1)">
       <div class="page" *ngFor="let page of pages; index as i"
            [style.height]="sizePage.height + 'cm'"
            [style.width]="sizePage.width + 'cm'"
@@ -117,6 +121,6 @@
              [data]="page?.innerText">
             </div>
       </div>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
   </mat-grid-list>
 </mat-sidenav-container>

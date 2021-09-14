@@ -1,6 +1,7 @@
 import { MatDialog } from '@angular/material/dialog';
 import { AfterViewChecked, Component } from '@angular/core';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { ApiComponent } from './components/api/api.component';
 import { MarkdownService } from 'ngx-markdown';
 
 

@@ -1,0 +1,20 @@
+
+<mat-form-field appearance="fill">
+    <mat-label>Schreibunterstützung</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let unterstuetzung of schreibunterstuetzung" [value]="schreibunterstuetzung.value">
+        {{unterstuetzung.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <input matInput type ="string" [(ngModel)]="semantische_relationen" style="border: 1px solid black">
+<mat-form-field appearance="fill">
+  <mat-label>Schreibunterstützung</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let unterstuetzung of schreibunterstuetzung" [value]="schreibunterstuetzung.value">
+      {{unterstuetzung.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+  

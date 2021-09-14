@@ -26,6 +26,8 @@ import {LoginComponent} from './login/login.component';
 import {MatInputModule} from '@angular/material/input';
 import {HttpClientModule} from '@angular/common/http';
 import { RegistrierungsDialogComponent } from './registrierungs-dialog/registrierungs-dialog.component';
+import { ApiComponent } from './editor/components/api/api.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { RegistrierungsDialogComponent } from './registrierungs-dialog/registrie
     ColorPickerComponent,
     LoginComponent,
     RegistrierungsDialogComponent
+    ApiComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,7 @@ import { RegistrierungsDialogComponent } from './registrierungs-dialog/registrie
     MatInputModule,
     ReactiveFormsModule,
     HttpClientModule
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
