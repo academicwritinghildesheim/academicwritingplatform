@@ -37,7 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
     DialogComponent,
     ColorPickerComponent,
     LoginComponent,
-    RegistrierungsDialogComponent
+    RegistrierungsDialogComponent,
     ApiComponent
   ],
   imports: [
@@ -60,7 +60,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatMenuModule,
     MatInputModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
     MatSelectModule,
   ],
   providers: [],

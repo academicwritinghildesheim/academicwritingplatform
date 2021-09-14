@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent,
-  HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+  HttpRequest, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import {FormControl, Validators} from '@angular/forms';
 
 
 
@@ -25,41 +27,81 @@ interface Schreibunterstuetzung {
 
 
 
-@Injectable()
+
 export class ApiComponent implements OnInit {
   constructor(
-    public dialogRef: MatDialogRef<RegistrierungsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, private readonly http: HttpClient) {}
+    private readonly http: HttpClient,
+    public dialog: MatDialog,
+  ){}
+  public selectedSemanticRelation: string;
+  public semanticRelationWordList: string[];
+
+
+  public semantische_relationen_FormControl = new FormControl('', [
+    Validators.required,
+  ]);
+
     //private http: HttpClient) { }
     //private base_url='https://academicwritinghildesheim.herokuapp.com/api/synonyms?word=zeigen'
 
 
 
-    getSemanticRelations(): void {
-      let ausgabe = this.http.get(this.base_url)
-      console.log(ausgabe)
+    getSemanticRelationsold(): void {
+      //let ausgabe = this.http.get(this.base_url)
+      console.log("test")
     }
+
+
+    public getSemanticRelations(): void {
+      console.log(this.suchWort)
+      console.log(this.selectedSemanticRelation)
+      this.openDialog()
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        })
+      };
+  
+      this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/${this.selectedSemanticRelation}?word=${this.suchWort}`, httpOptions)
+        .subscribe(wordList => {
+          console.log(wordList);
+          //this.semanticRelationWordList=wordList.array
+
+        });
+  
+    }
+    public openDialog2(): void {
+      this.dialog.open;
+    }
+    
+  public openDialog(): void {
+    const dialogRef = this.dialog.open(ApiComponent, {
+      width: '250px',
+      data: {name: "test", animal: "test2"}
+    });
+  }
+
     /*
         getSemanticRelations(): Observable<Schreibunterstuetzung[]> {
       return this.http.get<Schreibunterstuetzung[]>(this.base_url)
     }
     */
 
-  const req = new HttpRequest('GET', 'https://academicwritinghildesheim.herokuapp.com/api/synonyms?word=zeigen', {
-    reportProgress: true
-  });
+  //const req = new HttpRequest('GET', 'https://academicwritinghildesheim.herokuapp.com/api/synonyms?word=zeigen', {
+    //reportProgress: true
+  
 
-  semantische_relationen=''
+    suchWort="test";
 
   ngOnInit(): void {
   }
-  schreibunterstuetzung: Schreibunterstuetzung[] = [
-    {value: 'synonym-0', viewValue: 'Synonyme'},
-    {value: 'antonym-1', viewValue: 'Antonyme'},
-    {value: 'hyperonym-2', viewValue: 'Hyperonyme'},
-    {value: 'hyponym-3', viewValue: 'Hyponyme'},
-    {value: 'meronym-4', viewValue: 'Meronyme'},
-    {value: 'holonym-5', viewValue: 'Holonyme'},
+  schreibunterstuetzungen: Schreibunterstuetzung[] = [
+    {value: 'synonyms', viewValue: 'Synonyme'},
+    {value: 'antonyms', viewValue: 'Antonyme'},
+    {value: 'hypernyms', viewValue: 'Hyperonyme'},
+    {value: 'hyponyms', viewValue: 'Hyponyme'},
+    {value: 'meronyms', viewValue: 'Meronyme'},
+    {value: 'holonyms', viewValue: 'Holonyme'},
   ];
 
 }
