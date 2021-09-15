@@ -1,9 +1,10 @@
-import { MatDialog } from '@angular/material/dialog';
-import { AfterViewChecked, Component } from '@angular/core';
-import { DialogComponent } from './components/dialog/dialog.component';
-import { ApiComponent } from './components/api/api.component';
-import { MarkdownService } from 'ngx-markdown';
-
+import {MatDialog} from '@angular/material/dialog';
+import {AfterViewChecked, Component} from '@angular/core';
+import {DialogComponent} from './components/dialog/dialog.component';
+import {ApiComponent} from './components/api/api.component';
+import {MarkdownService} from 'ngx-markdown';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -12,7 +13,37 @@ import { MarkdownService } from 'ngx-markdown';
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements AfterViewChecked {
-  constructor(public dialog: MatDialog, private markdownService: MarkdownService) {
+  public sizePage = {
+    width: 13,
+    height: 18
+  };
+
+  public paddingPage = {
+    top: 2,
+    right: 2,
+    bottom: 2,
+    left: 2
+  };
+
+  public pages = [
+    {
+      htmlContent: null,
+      full: false,
+      innerText: null
+    },
+  ];
+
+  public currentPage = 0;
+  public currentChar = null;
+  public element: HTMLElement;
+  public runAfterViewChecked = false;
+  public wordcountlaenge = 0;
+  public wordList: string[];
+
+  constructor(public dialog: MatDialog,
+              private markdownService: MarkdownService,
+              private readonly http: HttpClient,
+              private router: Router) {
   }
 
   markdown = `# Markdown Cheat Sheet
@@ -118,48 +149,19 @@ export class EditorComponent implements AfterViewChecked {
   - [ ] Contact the media
   `;
 
-
-  wordcountlaenge = 0;
-  public wordList: string[];
-
   public wordCounter(pageIndex: number): void {
     let wordcountlaenge = 0;
     for (let i = 0; i < pageIndex + 1; i++) {
       const html = this.markdownService.compile(this.pages[i].innerText);
       const text = html.replace(/<[^>]*>/g, '').toString() //
-        .replace(/&#160;/g, ' ') //leerzeichen soll als ' ' angezeigt werden
-        .replace(/&#10;/g, ' '); //Zeilenumbruch soll als ' ' angezeigt werden
-      this.wordList = text ? text.split(/\s+/) : []; //Wörterliste
+        .replace(/&#160;/g, ' ') // leerzeichen soll als ' ' angezeigt werden
+        .replace(/&#10;/g, ' '); // Zeilenumbruch soll als ' ' angezeigt werden
+      this.wordList = text ? text.split(/\s+/) : []; // Wörterliste
       wordcountlaenge += this.wordList.length - 1;
 
     }
     this.wordcountlaenge = wordcountlaenge;
   }
-
-  public sizePage = {
-    width: 13,
-    height: 18
-  };
-
-  public paddingPage = {
-    top: 2,
-    right: 2,
-    bottom: 2,
-    left: 2
-  };
-
-  public pages = [
-    {
-      htmlContent: null,
-      full: false,
-      innerText: null
-    },
-  ];
-
-  public currentPage = 0;
-  public currentChar = null;
-  public element: HTMLElement;
-  public runAfterViewChecked = false;
 
   public openDialog(): void {
     this.dialog.open(DialogComponent);
@@ -169,7 +171,7 @@ export class EditorComponent implements AfterViewChecked {
     const dialogRef = this.dialog.open(ApiComponent, {
       width: '250px',
       height: '250px',
-    })
+    });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
     });
@@ -237,6 +239,11 @@ export class EditorComponent implements AfterViewChecked {
       }
       this.runAfterViewChecked = false;
     }
+  }
+
+  public logout(): void {
+    localStorage.removeItem('access_token');
+    this.router.navigateByUrl('').then(r => r);
   }
 }
 

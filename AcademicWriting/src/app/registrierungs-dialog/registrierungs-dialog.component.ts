@@ -44,10 +44,8 @@ export class RegistrierungsDialogComponent implements OnInit {
     };
 
     this.http.post('https://academicwritinghildesheim.herokuapp.com/api/user',
-      { username: this.usernameFormControl.value, email: this.emailFormControl.value, password: this.passwordFormControl.value }, httpOptions)
-      .subscribe(user => {
-        console.log(user);
-      });
+      { username: this.usernameFormControl.value, email: this.emailFormControl.value,
+        password: this.passwordFormControl.value }, httpOptions);
 
     this.onClose();
   }
