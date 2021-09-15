@@ -2,14 +2,14 @@
   <span>Dokument</span>
   <span class="spacer"></span>
   <button mat-button (click)="openDialog()" matTooltip="Timer stellen">
-  <mat-icon>alarm</mat-icon>
-</button>
+    <mat-icon>alarm</mat-icon>
+  </button>
   <button mat-icon-button (click)="sidenavLeft.toggle()" matTooltip="Dateiübersicht öffnen">
     <mat-icon>vertical_split</mat-icon>
   </button>
   <button mat-icon-button (click)="sidenavRight.toggle()" matTooltip="Statistiken öffnen">
     <mat-icon>analytics</mat-icon>
-  </button> 
+  </button>
   <button mat-icon-button matTooltip="Suche">
     <mat-icon>search</mat-icon>
   </button>
@@ -51,7 +51,9 @@
       <mat-list-item>
         Seitenanzahl: {{pages.length}}
       </mat-list-item>
-      <mat-list-item><div>Wortanzahl:<span style="margin-right:1rem" id="wordCount">{{ wordcountlaenge }}</span></div></mat-list-item>
+      <mat-list-item>
+        <div>Wortanzahl:<span style="margin-right:1rem" id="wordCount">{{ wordcountlaenge }}</span></div>
+      </mat-list-item>
       <mat-divider></mat-divider>
       <br>
       <mat-list-item>
@@ -65,16 +67,19 @@
       <h2>Editor</h2>
       <span class="spacer"></span>
       <a href="https://www.markdownguide.org/cheat-sheet" target='_blank' style="color: black">
-      <button mat-icon-button matTooltip="Markdown Cheat Sheet">
-        <mat-icon>lightbulb</mat-icon>
-      </button></a>
+        <button mat-icon-button matTooltip="Markdown Cheat Sheet">
+          <mat-icon>lightbulb</mat-icon>
+        </button></a>
       <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Schriftfarbe: <font color='Hex Code'>Text</font>">
         <mat-icon>format_color_text</mat-icon>
       </button>
+      <button (click)="openApiDialog()" mat-icon-button matTooltip="Semantic Relations">
+        <mat-icon>book</mat-icon>
+      </button>
       <mat-menu [hasBackdrop]="false" #menu="matMenu">
         <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-        <app-color-picker></app-color-picker>
-     </div>
+          <app-color-picker></app-color-picker>
+        </div>
       </mat-menu>
       <button mat-icon-button matTooltip="Fett: **Text**">
         <mat-icon>format_bold</mat-icon>
@@ -93,23 +98,23 @@
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </mat-grid-tile>
-     <mat-grid-tile [rowspan]="14 * (currentPage+1)">
-      <div class="page" *ngFor="let page of pages; index as i"
-           [style.height]="sizePage.height + 'cm'"
-           [style.width]="sizePage.width + 'cm'"
-           (click)="clickPage(i)">
-        <div class="editor"
-             [style.paddingTop]="paddingPage.top + 'cm'"
-             [style.paddingRight]="paddingPage.right + 'cm'"
-             [style.paddingBottom]="paddingPage.bottom + 'cm'"
-             [style.paddingLeft]="paddingPage.left + 'cm'"
-             [id]="'editor-' + i" contenteditable="true"
-             (input)="inputContent($event['data'], i); wordCounter(i)">
+    <mat-grid-tile [rowspan]="14 * (currentPage+1)">
+      <div class="page" *ngFor="let page of pages; index as i" [style.height]="sizePage.height + 'cm'"
+        [style.width]="sizePage.width + 'cm'" (click)="clickPage(i)">
+        <div class="editor" [style.paddingTop]="paddingPage.top + 'cm'" [style.paddingRight]="paddingPage.right + 'cm'"
+          [style.paddingBottom]="paddingPage.bottom + 'cm'" [style.paddingLeft]="paddingPage.left + 'cm'"
+          [id]="'editor-' + i" contenteditable="true" (input)="inputContent($event['data'], i); wordCounter(i)">
         </div>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile>
-      <app-api></app-api>
+    <mat-grid-tile [rowspan]="14 * (currentPage+1)">
+      <div class="page" *ngFor="let page of pages" [style.height]="sizePage.height + 'cm'"
+        [style.width]="sizePage.width + 'cm'">
+        <div markdown class="content" [style.paddingTop]="paddingPage.top + 'cm'"
+          [style.paddingRight]="paddingPage.right + 'cm'" [style.paddingBottom]="paddingPage.bottom + 'cm'"
+          [style.paddingLeft]="paddingPage.left + 'cm'" [data]="page?.innerText">
+        </div>
+      </div>
     </mat-grid-tile>
   </mat-grid-list>
 </mat-sidenav-container>

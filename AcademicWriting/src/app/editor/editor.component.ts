@@ -5,6 +5,7 @@ import { ApiComponent } from './components/api/api.component';
 import { MarkdownService } from 'ngx-markdown';
 
 
+
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
@@ -117,20 +118,20 @@ export class EditorComponent implements AfterViewChecked {
   - [ ] Contact the media
   `;
 
-  
-wordcountlaenge = 0;
+
+  wordcountlaenge = 0;
   public wordList: string[];
-  
+
   public wordCounter(pageIndex: number): void {
- let wordcountlaenge = 0;
+    let wordcountlaenge = 0;
     for (let i = 0; i < pageIndex + 1; i++) {
       const html = this.markdownService.compile(this.pages[i].innerText);
       const text = html.replace(/<[^>]*>/g, '').toString() //
         .replace(/&#160;/g, ' ') //leerzeichen soll als ' ' angezeigt werden
         .replace(/&#10;/g, ' '); //Zeilenumbruch soll als ' ' angezeigt werden
       this.wordList = text ? text.split(/\s+/) : []; //Wörterliste
-      wordcountlaenge += this.wordList.length -1;
-     
+      wordcountlaenge += this.wordList.length - 1;
+
     }
     this.wordcountlaenge = wordcountlaenge;
   }
@@ -162,6 +163,16 @@ wordcountlaenge = 0;
 
   public openDialog(): void {
     this.dialog.open(DialogComponent);
+  }
+
+  public openApiDialog(): void {
+    const dialogRef = this.dialog.open(ApiComponent, {
+      width: '250px',
+      height: '250px',
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 
   public clickPage(i): void {
