@@ -30,8 +30,10 @@ interface Schreibunterstuetzung {
 
 
 
+
 export class ApiComponent implements OnInit {
   constructor(
+
     private readonly http: HttpClient,
     public dialog: MatDialog,
   ) { }
@@ -57,7 +59,7 @@ export class ApiComponent implements OnInit {
   public getSemanticRelations(): void {
     console.log(this.suchWort)
     console.log(this.selectedSemanticRelation)
-    this.openDialog()
+    //this.openDialog3()
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -72,11 +74,17 @@ export class ApiComponent implements OnInit {
       });
 
   }
+  public openDialog(): void {
+    this.dialog.open(DialogElementsExampleDialogComponent, {
+      width: '250px',
+      data: { name: "test", animal: "test2" }
+    });
+  }
   public openDialog2(): void {
     this.dialog.open;
   }
 
-  public openDialog(): void {
+  public openDialog3(): void {
     const dialogRef = this.dialog.open(ApiComponent, {
       width: '250px',
       data: { name: "test", animal: "test2" }
@@ -93,7 +101,7 @@ export class ApiComponent implements OnInit {
   //reportProgress: true
 
 
-  suchWort = "test";
+  suchWort = "zeigen";
 
   ngOnInit(): void {
   }
@@ -107,3 +115,15 @@ export class ApiComponent implements OnInit {
   ];
 
 }
+
+
+export class DialogElementsExampleDialogComponent {
+  constructor(public dialogRef: MatDialogRef<DialogElementsExampleDialogComponent>) { }
+
+
+
+  public closeDialog(): void {
+    this.dialogRef.close();
+  }
+}
+

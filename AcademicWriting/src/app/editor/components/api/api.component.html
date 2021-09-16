@@ -1,20 +1,18 @@
-
 <mat-form-field appearance="fill">
-    <mat-label>Schreibunterstützung</mat-label>
-    <mat-select [(ngModel)]="selectedSemanticRelation" name="unterstuetzung">
-      <mat-option *ngFor="let schreibunterstuetzung of schreibunterstuetzungen" [value]="schreibunterstuetzung.value">
-        {{schreibunterstuetzung.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <!--  <input matInput type="text" [(ngModel)]="semantische_relationen" style="border: 1px solid black"> -->
-   <input type="text" [(ngModel)]="suchWort">
+  <mat-label>Schreibunterstützung</mat-label>
+  <mat-select [(ngModel)]="selectedSemanticRelation" name="unterstuetzung">
+    <mat-option *ngFor="let schreibunterstuetzung of schreibunterstuetzungen" [value]="schreibunterstuetzung.value">
+      {{schreibunterstuetzung.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<!--  <input matInput type="text" [(ngModel)]="semantische_relationen" style="border: 1px solid black"> -->
+<input type="text" [(ngModel)]="suchWort">
 <!--   <input type="text" matInput [formControl]="semantische_relationen_FormControl">
   <mat-error *ngIf="semantische_relationen_FormControl.hasError('required')">
     Username is required
   </mat-error> -->
 <button mat-button (click)="getSemanticRelations()">
-Bestätigen
+  Bestätigen
 </button>
-
-  
+<li *ngFor="let item of semanticRelationWordList; index as i">{{item}}</li>
