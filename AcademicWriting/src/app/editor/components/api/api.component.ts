@@ -1,12 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
-  HttpClient, HttpEvent, HttpEventType, HttpProgressEvent,
-  HttpRequest, HttpResponse, HttpErrorResponse, HttpHeaders
+  HttpClient, HttpHeaders
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+
 import { FormControl, Validators } from '@angular/forms';
 
 

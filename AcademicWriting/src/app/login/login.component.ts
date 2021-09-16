@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { RegistrierungsDialogComponent } from '../registrierungs-dialog/registrierungs-dialog.component';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +39,9 @@ export class LoginComponent {
     this.http.post('https://academicwritinghildesheim.herokuapp.com/api/auth/login',
       { username: this.usernameFormControl.value, password: this.passwordFormControl.value }, httpOptions)
       .subscribe((user: any) => {
+        console.log(user.access_token)
         localStorage.setItem('access_token', user.access_token);
+        localStorage.setItem('user_id', this.usernameFormControl.value);
         this.router.navigateByUrl('editor').then(r => r);
       });
   }

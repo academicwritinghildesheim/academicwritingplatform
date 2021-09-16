@@ -1,10 +1,10 @@
-import {MatDialog} from '@angular/material/dialog';
-import {AfterViewChecked, Component} from '@angular/core';
-import {DialogComponent} from './components/dialog/dialog.component';
-import {ApiComponent} from './components/api/api.component';
-import {MarkdownService} from 'ngx-markdown';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AfterViewChecked, Component } from '@angular/core';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { ApiComponent } from './components/api/api.component';
+import { MarkdownService } from 'ngx-markdown';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 
@@ -43,11 +43,12 @@ export class EditorComponent implements AfterViewChecked {
   public runAfterViewChecked = false;
   public wordcountlaenge = 0;
   public wordList: string[];
+  public papers: any[];
 
   constructor(public dialog: MatDialog,
-              private markdownService: MarkdownService,
-              private readonly http: HttpClient,
-              private router: Router) {
+    private markdownService: MarkdownService,
+    private readonly http: HttpClient,
+    private router: Router) {
   }
 
   markdown = `# Markdown Cheat Sheet
@@ -161,8 +162,8 @@ export class EditorComponent implements AfterViewChecked {
         .replace(/&#160;/g, ' ') //leerzeichen soll als ' ' angezeigt werden
         .replace(/&#10;/g, ' '); //Zeilenumbruch soll als ' ' angezeigt werden
       this.wordList = text ? text.split(/\s+/) : []; //Wörterliste
-      wordcountlaenge += this.wordList.length -1; //Anzahl der Wörter
-     
+      wordcountlaenge += this.wordList.length - 1; //Anzahl der Wörter
+
     }
     this.wordcountlaenge = wordcountlaenge;
   }
@@ -170,6 +171,153 @@ export class EditorComponent implements AfterViewChecked {
   public openDialog(): void {
     this.dialog.open(DialogComponent);
   }
+
+
+  public sentenceLength(): void {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+
+    this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/statistics/avg_sentence_length?text=This is a sentence. This is one too! How about this one?`, httpOptions)
+      .subscribe(wordList => {
+        console.log(wordList);
+
+      });
+
+  }
+
+  public getAllPapers(): void {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem("access_token")}`
+      })
+    };
+    this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/paper?all=True`, httpOptions)
+      .subscribe((wordList: any) => {
+        console.log(wordList);
+        this.papers = wordList
+
+      });
+
+  }
+
+  public addPaper(): void {
+
+    let text = ''
+    for (let page of this.pages) {
+      text += page.innerText
+    }
+    console.log(text)
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem("access_token")}`
+      })
+    };
+    this.http.post(`https://academicwritinghildesheim.herokuapp.com/api/paper`, {
+      content: text,
+      title: "Dokument",
+      last_modified: new Date(),
+      author_id: localStorage.getItem("user_id")
+    }, httpOptions)
+      .subscribe(wordList => {
+        console.log(wordList);
+
+      });
+  }
+
+  public changePaper(): void {
+    //TODO: choose one paper which is to be displayed
+    //what happens to current paper? auto-save? no save?
+    //update function (put request) = save?
+  };
+
+  public updatePaper(): void {
+    let paper_id = 1
+
+    let text = ''
+    for (let page of this.pages) {
+      text += page.innerText
+    }
+    console.log(text)
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem("access_token")}`
+      })
+    };
+
+
+    this.http.put(`https://academicwritinghildesheim.herokuapp.com/api/paper?id=2`, {
+      content: text,
+      title: "2",
+      last_modified: new Date(),
+      author_id: localStorage.getItem("user_id")
+    }, httpOptions)
+      .subscribe(wordList => {
+        console.log(wordList);
+
+      });
+  }
+
+
+  public deletePaper(): void {
+    let paper_id = 1
+
+    let text = ''
+    for (let page of this.pages) {
+      text += page.innerText
+    }
+    console.log(text)
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem("access_token")}`
+      })
+    };
+    this.http.delete(`https://academicwritinghildesheim.herokuapp.com/api/paper?id=2`, httpOptions)
+      .subscribe(wordList => {
+        console.log(wordList);
+
+      });
+  }
+
+  public convertPaper(): void {
+    let markdown = ''
+    for (let page of this.pages) {
+      markdown = this.markdownService.compile(page.htmlContent)
+      //const text = markdown.replace(/<[^>]*>/g, '').toString()
+    }
+    console.log(markdown)
+
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        // 'Authorization': `${localStorage.getItem("access_token")}`
+        'Accept': '*/*',
+      })
+    };
+
+
+    this.http.post(`https://md-to-pdf.herokuapp.com/`, {
+      markdown: "<p>markdown</p>",
+    }, httpOptions)
+      .subscribe(wordList => {
+        console.log(wordList);
+
+      });
+  }
+
 
   public openApiDialog(): void {
     const dialogRef = this.dialog.open(ApiComponent, {
@@ -250,32 +398,36 @@ export class EditorComponent implements AfterViewChecked {
     this.router.navigateByUrl('').then(r => r);
   }
   public musikToggleActive: boolean;
-    slideTogglelofi(event: any): void {
-if (this.musikToggleActivelofi === true) {
-  this.musikToggleActivelofi = false;
+  slideTogglelofi(event: any): void {
+    if (this.musikToggleActivelofi === true) {
+      this.musikToggleActivelofi = false;
 
-} else { 
-  this.musikToggleActivelofi = true;
-}
+    } else {
+      this.musikToggleActivelofi = true;
     }
+  }
 
   public musikToggleActive2: boolean;
-    slideToggleclassic(event: any): void {
-  if (this.musikToggleActiveclassic === true) {
-        this.musikToggleActiveclassic = false;
-     } else {
-       this.musikToggleActiveclassic = true;
-     
-     }
+  slideToggleclassic(event: any): void {
+    if (this.musikToggleActiveclassic === true) {
+      this.musikToggleActiveclassic = false;
+    } else {
+      this.musikToggleActiveclassic = true;
+
     }
-  
-    public musikToggleActive3: boolean;
-    slideTogglerain(event: any): void {
-  if (this.musikToggleActiverain === true) {
-    this.musikToggleActiverain = false;
-  } else {
-    this.musikToggleActiverain = true;}
-}
+  }
+
+  public musikToggleActive3: boolean;
+  slideTogglerain(event: any): void {
+    if (this.musikToggleActiverain === true) {
+      this.musikToggleActiverain = false;
+    } else {
+      this.musikToggleActiverain = true;
+    }
+  }
+  ngOnInit(): void {
+    this.getAllPapers()
+  }
 }
 
 
