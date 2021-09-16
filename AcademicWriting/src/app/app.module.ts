@@ -24,10 +24,13 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatMenuModule} from '@angular/material/menu';
 import {LoginComponent} from './login/login.component';
 import {MatInputModule} from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {HttpClientModule} from '@angular/common/http';
 import { RegistrierungsDialogComponent } from './registrierungs-dialog/registrierungs-dialog.component';
 import { ApiComponent } from './editor/components/api/api.component';
 import { MatSelectModule } from '@angular/material/select';
+
+
 
 @NgModule({
   declarations: [
@@ -62,6 +65,7 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     HttpClientModule,
     MatSelectModule,
+    MatSlideToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

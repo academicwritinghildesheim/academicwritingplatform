@@ -7,12 +7,16 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 
+
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements AfterViewChecked {
+  musikToggleActivelofi = false;
+  musikToggleActiveclassic = false;
+  musikToggleActiverain = false;
   public sizePage = {
     width: 13,
     height: 18
@@ -154,11 +158,11 @@ export class EditorComponent implements AfterViewChecked {
     for (let i = 0; i < pageIndex + 1; i++) {
       const html = this.markdownService.compile(this.pages[i].innerText);
       const text = html.replace(/<[^>]*>/g, '').toString() //
-        .replace(/&#160;/g, ' ') // leerzeichen soll als ' ' angezeigt werden
-        .replace(/&#10;/g, ' '); // Zeilenumbruch soll als ' ' angezeigt werden
-      this.wordList = text ? text.split(/\s+/) : []; // Wörterliste
-      wordcountlaenge += this.wordList.length - 1;
-
+        .replace(/&#160;/g, ' ') //leerzeichen soll als ' ' angezeigt werden
+        .replace(/&#10;/g, ' '); //Zeilenumbruch soll als ' ' angezeigt werden
+      this.wordList = text ? text.split(/\s+/) : []; //Wörterliste
+      wordcountlaenge += this.wordList.length -1; //Anzahl der Wörter
+     
     }
     this.wordcountlaenge = wordcountlaenge;
   }
@@ -245,6 +249,33 @@ export class EditorComponent implements AfterViewChecked {
     localStorage.removeItem('access_token');
     this.router.navigateByUrl('').then(r => r);
   }
+  public musikToggleActive: boolean;
+    slideTogglelofi(event: any): void {
+if (this.musikToggleActivelofi === true) {
+  this.musikToggleActivelofi = false;
+
+} else { 
+  this.musikToggleActivelofi = true;
+}
+    }
+
+  public musikToggleActive2: boolean;
+    slideToggleclassic(event: any): void {
+  if (this.musikToggleActiveclassic === true) {
+        this.musikToggleActiveclassic = false;
+     } else {
+       this.musikToggleActiveclassic = true;
+     
+     }
+    }
+  
+    public musikToggleActive3: boolean;
+    slideTogglerain(event: any): void {
+  if (this.musikToggleActiverain === true) {
+    this.musikToggleActiverain = false;
+  } else {
+    this.musikToggleActiverain = true;}
+}
 }
 
 
