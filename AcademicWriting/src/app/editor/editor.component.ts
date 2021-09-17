@@ -1,11 +1,10 @@
-import { MatDialog } from '@angular/material/dialog';
-import { AfterViewChecked, Component } from '@angular/core';
-import { DialogComponent } from './components/dialog/dialog.component';
-import { ApiComponent } from './components/api/api.component';
-import { MarkdownService } from 'ngx-markdown';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-
+import {MatDialog} from '@angular/material/dialog';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
+import {DialogComponent} from './components/dialog/dialog.component';
+import {ApiComponent} from './components/api/api.component';
+import {MarkdownService} from 'ngx-markdown';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -13,10 +12,11 @@ import { Router } from '@angular/router';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements AfterViewChecked {
-  musikToggleActivelofi = false;
-  musikToggleActiveclassic = false;
-  musikToggleActiverain = false;
+export class EditorComponent implements OnInit, AfterViewChecked {
+  public musikToggleActivelofi = false;
+  public musikToggleActiveclassic = false;
+  public musikToggleActiverain = false;
+
   public sizePage = {
     width: 13,
     height: 18
@@ -45,13 +45,7 @@ export class EditorComponent implements AfterViewChecked {
   public wordList: string[];
   public papers: any[];
 
-  constructor(public dialog: MatDialog,
-    private markdownService: MarkdownService,
-    private readonly http: HttpClient,
-    private router: Router) {
-  }
-
-  markdown = `# Markdown Cheat Sheet
+  public markdown = `# Markdown Cheat Sheet
 
   Thanks for visiting [The Markdown Guide](https://www.markdownguide.org)!
 
@@ -154,15 +148,60 @@ export class EditorComponent implements AfterViewChecked {
   - [ ] Contact the media
   `;
 
+  constructor(public dialog: MatDialog,
+              private markdownService: MarkdownService,
+              private readonly http: HttpClient,
+              private router: Router) {
+  }
+
+  public ngOnInit(): void {
+    this.getAllPapers();
+  }
+
+  public ngAfterViewChecked(): void {
+    document.getElementById('editor-' + this.currentPage).focus();
+
+    if (this.runAfterViewChecked) {
+      if (this.currentChar) {
+        let str = this.pages[this.currentPage - 1].htmlContent;
+        const indexLastCloseDiv = str.lastIndexOf('</div>');
+        const indexLastBr = str.lastIndexOf('<br>');
+        let lastChar = str[indexLastCloseDiv - 1];
+        if (indexLastBr !== -1 && (indexLastBr + 4) === indexLastCloseDiv) {
+          lastChar = ' ';
+        }
+
+        if (indexLastCloseDiv !== -1) {
+          str = str.slice(0, indexLastCloseDiv - 1) + str.slice(indexLastCloseDiv);
+        } else {
+          str = str.slice(0, str.length - 1);
+        }
+        this.pages[this.currentPage - 1].htmlContent = str;
+
+        if (this.pages[this.currentPage].htmlContent) {
+          this.pages[this.currentPage].htmlContent = lastChar + this.pages[this.currentPage].htmlContent;
+        } else {
+          this.pages[this.currentPage].htmlContent = lastChar;
+        }
+      }
+
+      for (let i = 0; i < this.pages.length; i++) {
+        this.element = document.getElementById('editor-' + i);
+        this.element.innerHTML = this.pages[i].htmlContent;
+      }
+      this.runAfterViewChecked = false;
+    }
+  }
+
   public wordCounter(pageIndex: number): void {
     let wordcountlaenge = 0;
     for (let i = 0; i < pageIndex + 1; i++) {
       const html = this.markdownService.compile(this.pages[i].innerText);
       const text = html.replace(/<[^>]*>/g, '').toString() //
-        .replace(/&#160;/g, ' ') //leerzeichen soll als ' ' angezeigt werden
-        .replace(/&#10;/g, ' '); //Zeilenumbruch soll als ' ' angezeigt werden
-      this.wordList = text ? text.split(/\s+/) : []; //Wörterliste
-      wordcountlaenge += this.wordList.length - 1; //Anzahl der Wörter
+        .replace(/&#160;/g, ' ') // leerzeichen soll als ' ' angezeigt werden
+        .replace(/&#10;/g, ' '); // Zeilenumbruch soll als ' ' angezeigt werden
+      this.wordList = text ? text.split(/\s+/) : []; // Wörterliste
+      wordcountlaenge += this.wordList.length - 1; // Anzahl der Wörter
 
     }
     this.wordcountlaenge = wordcountlaenge;
@@ -172,7 +211,6 @@ export class EditorComponent implements AfterViewChecked {
     this.dialog.open(DialogComponent);
   }
 
-
   public sentenceLength(): void {
 
     const httpOptions = {
@@ -181,13 +219,11 @@ export class EditorComponent implements AfterViewChecked {
       })
     };
 
-
     this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/statistics/avg_sentence_length?text=This is a sentence. This is one too! How about this one?`, httpOptions)
       .subscribe(wordList => {
         console.log(wordList);
 
       });
-
   }
 
   public getAllPapers(): void {
@@ -195,37 +231,35 @@ export class EditorComponent implements AfterViewChecked {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem("access_token")}`
+        Authorization: `${localStorage.getItem('access_token')}`
       })
     };
     this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/paper?all=True`, httpOptions)
       .subscribe((wordList: any) => {
         console.log(wordList);
-        this.papers = wordList
+        this.papers = wordList;
 
       });
-
   }
 
   public addPaper(): void {
-
-    let text = ''
-    for (let page of this.pages) {
-      text += page.innerText
+    let text = '';
+    for (const page of this.pages) {
+      text += page.innerText;
     }
-    console.log(text)
+    console.log(text);
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem("access_token")}`
+        Authorization: `${localStorage.getItem('access_token')}`
       })
     };
     this.http.post(`https://academicwritinghildesheim.herokuapp.com/api/paper`, {
       content: text,
-      title: "Dokument",
+      title: 'Dokument',
       last_modified: new Date(),
-      author_id: localStorage.getItem("user_id")
+      author_id: localStorage.getItem('user_id')
     }, httpOptions)
       .subscribe(wordList => {
         console.log(wordList);
@@ -234,33 +268,32 @@ export class EditorComponent implements AfterViewChecked {
   }
 
   public changePaper(): void {
-    //TODO: choose one paper which is to be displayed
-    //what happens to current paper? auto-save? no save?
-    //update function (put request) = save?
-  };
+    // TODO: choose one paper which is to be displayed
+    // what happens to current paper? auto-save? no save?
+    // update function (put request) = save?
+  }
 
   public updatePaper(): void {
-    let paper_id = 1
+    const paper_id = 1;
 
-    let text = ''
-    for (let page of this.pages) {
-      text += page.innerText
+    let text = '';
+    for (const page of this.pages) {
+      text += page.innerText;
     }
-    console.log(text)
+    console.log(text);
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem("access_token")}`
+        Authorization: `${localStorage.getItem('access_token')}`
       })
     };
 
-
     this.http.put(`https://academicwritinghildesheim.herokuapp.com/api/paper?id=2`, {
       content: text,
-      title: "2",
+      title: '2',
       last_modified: new Date(),
-      author_id: localStorage.getItem("user_id")
+      author_id: localStorage.getItem('user_id')
     }, httpOptions)
       .subscribe(wordList => {
         console.log(wordList);
@@ -268,20 +301,19 @@ export class EditorComponent implements AfterViewChecked {
       });
   }
 
-
   public deletePaper(): void {
-    let paper_id = 1
+    const paper_id = 1;
 
-    let text = ''
-    for (let page of this.pages) {
-      text += page.innerText
+    let text = '';
+    for (const page of this.pages) {
+      text += page.innerText;
     }
-    console.log(text)
+    console.log(text);
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem("access_token")}`
+        Authorization: `${localStorage.getItem('access_token')}`
       })
     };
     this.http.delete(`https://academicwritinghildesheim.herokuapp.com/api/paper?id=2`, httpOptions)
@@ -292,32 +324,29 @@ export class EditorComponent implements AfterViewChecked {
   }
 
   public convertPaper(): void {
-    let markdown = ''
-    for (let page of this.pages) {
-      markdown = this.markdownService.compile(page.htmlContent)
-      //const text = markdown.replace(/<[^>]*>/g, '').toString()
+    let markdown = '';
+    for (const page of this.pages) {
+      markdown = this.markdownService.compile(page.htmlContent);
+      // const text = markdown.replace(/<[^>]*>/g, '').toString()
     }
-    console.log(markdown)
-
+    console.log(markdown);
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         // 'Authorization': `${localStorage.getItem("access_token")}`
-        'Accept': '*/*',
+        Accept: '*/*',
       })
     };
 
-
     this.http.post(`https://md-to-pdf.herokuapp.com/`, {
-      markdown: "<p>markdown</p>",
+      markdown: '<p>markdown</p>',
     }, httpOptions)
       .subscribe(wordList => {
         console.log(wordList);
 
       });
   }
-
 
   public openApiDialog(): void {
     const dialogRef = this.dialog.open(ApiComponent, {
@@ -353,52 +382,14 @@ export class EditorComponent implements AfterViewChecked {
       this.currentPage = i + 1;
       this.runAfterViewChecked = true;
     }
-    // this.wordCounter(i)
-  }
-
-
-  public ngAfterViewChecked(): void {
-    document.getElementById('editor-' + this.currentPage).focus();
-
-
-    if (this.runAfterViewChecked) {
-      if (this.currentChar) {
-        let str = this.pages[this.currentPage - 1].htmlContent;
-        const indexLastCloseDiv = str.lastIndexOf('</div>');
-        const indexLastBr = str.lastIndexOf('<br>');
-        let lastChar = str[indexLastCloseDiv - 1];
-        if (indexLastBr !== -1 && (indexLastBr + 4) === indexLastCloseDiv) {
-          lastChar = ' ';
-        }
-
-        if (indexLastCloseDiv !== -1) {
-          str = str.slice(0, indexLastCloseDiv - 1) + str.slice(indexLastCloseDiv);
-        } else {
-          str = str.slice(0, str.length - 1);
-        }
-        this.pages[this.currentPage - 1].htmlContent = str;
-
-        if (this.pages[this.currentPage].htmlContent) {
-          this.pages[this.currentPage].htmlContent = lastChar + this.pages[this.currentPage].htmlContent;
-        } else {
-          this.pages[this.currentPage].htmlContent = lastChar;
-        }
-      }
-
-      for (let i = 0; i < this.pages.length; i++) {
-        this.element = document.getElementById('editor-' + i);
-        this.element.innerHTML = this.pages[i].htmlContent;
-      }
-      this.runAfterViewChecked = false;
-    }
   }
 
   public logout(): void {
     localStorage.removeItem('access_token');
     this.router.navigateByUrl('').then(r => r);
   }
-  public musikToggleActive: boolean;
-  slideTogglelofi(event: any): void {
+
+  public slideTogglelofi(): void {
     if (this.musikToggleActivelofi === true) {
       this.musikToggleActivelofi = false;
 
@@ -407,8 +398,7 @@ export class EditorComponent implements AfterViewChecked {
     }
   }
 
-  public musikToggleActive2: boolean;
-  slideToggleclassic(event: any): void {
+  public slideToggleclassic(): void {
     if (this.musikToggleActiveclassic === true) {
       this.musikToggleActiveclassic = false;
     } else {
@@ -417,16 +407,12 @@ export class EditorComponent implements AfterViewChecked {
     }
   }
 
-  public musikToggleActive3: boolean;
-  slideTogglerain(event: any): void {
+  public slideTogglerain(): void {
     if (this.musikToggleActiverain === true) {
       this.musikToggleActiverain = false;
     } else {
       this.musikToggleActiverain = true;
     }
-  }
-  ngOnInit(): void {
-    this.getAllPapers()
   }
 }
 

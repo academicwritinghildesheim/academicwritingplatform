@@ -1,15 +1,15 @@
 <iframe *ngIf="musikToggleActivelofi" width="0" height="0"
-  src="http://youtuberepeater.com/watch?v=5qap5aO4i9A&name=lofi+hip+hop+radio+beats+to+relax+study#gsc.tab=0"
-  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen></iframe>
+        src="http://youtuberepeater.com/watch?v=5qap5aO4i9A&name=lofi+hip+hop+radio+beats+to+relax+study#gsc.tab=0"
+        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
 <iframe *ngIf="musikToggleActiveclassic" width="0" height="0"
-  src="http://youtuberepeater.com/watch?v=E7EOjkGVmyo&name=1HOUR+ORIGINAL+RELAXING+PIANO+Jacob+39+s#gsc.tab=0"
-  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen></iframe>
+        src="http://youtuberepeater.com/watch?v=E7EOjkGVmyo&name=1HOUR+ORIGINAL+RELAXING+PIANO+Jacob+39+s#gsc.tab=0"
+        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
 <iframe *ngIf="musikToggleActiverain" width="0" height="0"
-  src="http://youtuberepeater.com/watch?v=gpmZjOQakbA&name=Leichte+Regentropfen+Sanfte+Regengerdusche+zum+Einschlafen+Lernen+Meditieren+und+Entspannen#gsc.tab=0"
-  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen></iframe>
+        src="http://youtuberepeater.com/watch?v=gpmZjOQakbA&name=Leichte+Regentropfen+Sanfte+Regengerdusche+zum+Einschlafen+Lernen+Meditieren+und+Entspannen#gsc.tab=0"
+        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
 
 <mat-toolbar>
   <span>Dokument</span>
@@ -20,16 +20,22 @@
   </button>
   <mat-menu [hasBackdrop]="false" #menu2="matMenu">
     <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-      <mat-slide-toggle checked="false" labelPosition="before" (change)="slideTogglelofi($event)">Lofi
-      </mat-slide-toggle>
-      <mat-slide-toggle checked="false" labelPosition="before" (change)="slideToggleclassic($event)">Klassisch
-      </mat-slide-toggle>
-      <mat-slide-toggle checked="false" labelPosition="before" (change)="slideTogglerain($event)">Regen
-      </mat-slide-toggle>
+      <button mat-menu-item>
+        <mat-slide-toggle checked="false" labelPosition="before" (change)="slideTogglelofi()">Lofi
+        </mat-slide-toggle>
+      </button>
+      <button mat-menu-item>
+        <mat-slide-toggle checked="false" labelPosition="before" (change)="slideToggleclassic()">Klassisch
+        </mat-slide-toggle>
+      </button>
+      <button mat-menu-item>
+        <mat-slide-toggle checked="false" labelPosition="before" (change)="slideTogglerain()">Regen
+        </mat-slide-toggle>
+      </button>
     </div>
   </mat-menu>
 
-  <button mat-button (click)="getAllPapers()" matTooltip="Timer stellen">
+  <button mat-button (click)="openDialog()" matTooltip="Timer stellen">
     <mat-icon>alarm</mat-icon>
   </button>
   <button mat-icon-button (click)="sidenavLeft.toggle()" matTooltip="Dateiübersicht öffnen">
@@ -79,7 +85,7 @@
         Seitenanzahl: {{pages.length}}
       </mat-list-item>
       <mat-list-item>
-        <div>Wortanzahl:<span style="margin-right:1rem" id="wordCount">{{ wordcountlaenge }}</span></div>
+        <div>Wortanzahl: <span style="margin-right:1rem" id="wordCount">{{ wordcountlaenge }}</span></div>
       </mat-list-item>
       <mat-divider></mat-divider>
       <br>
@@ -96,7 +102,8 @@
       <a href="https://www.markdownguide.org/cheat-sheet" target='_blank' style="color: black">
         <button mat-icon-button matTooltip="Markdown Cheat Sheet">
           <mat-icon>lightbulb</mat-icon>
-        </button></a>
+        </button>
+      </a>
       <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Schriftfarbe: <font color='Hex Code'>Text</font>">
         <mat-icon>format_color_text</mat-icon>
       </button>
@@ -127,19 +134,19 @@
     </mat-grid-tile>
     <mat-grid-tile [rowspan]="14 * (currentPage+1)">
       <div class="page" *ngFor="let page of pages; index as i" [style.height]="sizePage.height + 'cm'"
-        [style.width]="sizePage.width + 'cm'" (click)="clickPage(i)">
+           [style.width]="sizePage.width + 'cm'" (click)="clickPage(i)">
         <div class="editor" [style.paddingTop]="paddingPage.top + 'cm'" [style.paddingRight]="paddingPage.right + 'cm'"
-          [style.paddingBottom]="paddingPage.bottom + 'cm'" [style.paddingLeft]="paddingPage.left + 'cm'"
-          [id]="'editor-' + i" contenteditable="true" (input)="inputContent($event['data'], i); wordCounter(i)">
+             [style.paddingBottom]="paddingPage.bottom + 'cm'" [style.paddingLeft]="paddingPage.left + 'cm'"
+             [id]="'editor-' + i" contenteditable="true" (input)="inputContent($event['data'], i); wordCounter(i)">
         </div>
       </div>
     </mat-grid-tile>
     <mat-grid-tile [rowspan]="14 * (currentPage+1)">
       <div class="page" *ngFor="let page of pages" [style.height]="sizePage.height + 'cm'"
-        [style.width]="sizePage.width + 'cm'">
+           [style.width]="sizePage.width + 'cm'">
         <div markdown class="content" [style.paddingTop]="paddingPage.top + 'cm'"
-          [style.paddingRight]="paddingPage.right + 'cm'" [style.paddingBottom]="paddingPage.bottom + 'cm'"
-          [style.paddingLeft]="paddingPage.left + 'cm'" [data]="page?.innerText">
+             [style.paddingRight]="paddingPage.right + 'cm'" [style.paddingBottom]="paddingPage.bottom + 'cm'"
+             [style.paddingLeft]="paddingPage.left + 'cm'" [data]="page?.innerText">
         </div>
       </div>
     </mat-grid-tile>
