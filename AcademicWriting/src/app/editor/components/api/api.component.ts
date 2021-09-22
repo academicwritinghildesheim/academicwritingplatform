@@ -16,6 +16,7 @@ interface Schreibunterstuetzung {
 
 
 
+
 @Component({
   selector: 'app-api',
   templateUrl: './api.component.html',
@@ -47,9 +48,17 @@ export class ApiComponent implements OnInit {
 
 
 
-  getSemanticRelationsold(): void {
+  startApi(): void {
     //let ausgabe = this.http.get(this.base_url)
     console.log("test")
+    if (1 == 1) {
+      this.getDOIbyTitel()
+    } else {
+      this.getSemanticRelations()
+
+    }
+
+
   }
 
 
@@ -74,18 +83,94 @@ export class ApiComponent implements OnInit {
   public openDialog(): void {
     this.dialog.open(DialogElementsExampleDialogComponent, {
       width: '250px',
-      data: { name: "test", animal: "test2" }
     });
-  }
-  public openDialog2(): void {
-    this.dialog.open;
   }
 
-  public openDialog3(): void {
-    const dialogRef = this.dialog.open(ApiComponent, {
-      width: '250px',
-      data: { name: "test", animal: "test2" }
-    });
+  public getDOIbyTitel(): void {
+    let title = "Word2Vec"
+    title = this.suchWort
+    console.log(this.suchWort)
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+    this.http.get(`https://api.unpaywall.org/v2/search/?query=${title}&email=marcel.ritzmann@gmx.de`, httpOptions)
+      .subscribe((response: any) => {
+        console.log(response);
+        console.log(response.results[0].response.doi)
+        const doi = response.results[0].response.doi
+        this.checkDOIstatus(doi)
+
+      });
+  }
+
+  public checkDOIstatus(doi: string): void {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+      })
+    };
+    //https://api.crossref.org/works/10.1037/0003-066X.59.1.29/agency
+    //this.http.get(`https://api.crossref.org/works/10.1037/0003-066X.59.1.29/agency`, httpOptions)
+    this.http.get(`https://api.crossref.org/works/${doi}/agency`, httpOptions)
+      .subscribe((response: any) => {
+        console.log(response);
+        console.log(response.status);
+        if (response.status == "ok") {
+          this.getSimiliarLiteraturebyDOI(doi)
+          console.log("jo ok")
+        }
+        else {
+          console.log("not ok")
+        }
+
+      });
+  }
+
+  public getSimiliarLiteraturebyDOI(doi: string): void {
+    const title = "Word2Vec"
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+      })
+    };
+    //https://api.crossref.org/works/10.1037/0003-066X.59.1.29/agency
+    //this.http.get(`https://api.crossref.org/works/10.1037/0003-066X.59.1.29/agency`, httpOptions)
+    this.http.get(`https://api.crossref.org/works/${doi}`, httpOptions)
+      .subscribe((response: any) => {
+        console.log(response);
+        console.log(response.message.author[0]) //für alle autoren?
+        let authors = []
+        response.message.author.forEach(element => {
+          authors.push(element.family)
+        });
+        this.getSimiliarLiteraturebyAuthor(authors)
+
+
+      });
+  }
+
+  public getSimiliarLiteraturebyAuthor(authors: string[]): void {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+      })
+    };
+    //https://api.crossref.org/works/10.1037/0003-066X.59.1.29/agency
+    //this.http.get(`https://api.crossref.org/works/10.1037/0003-066X.59.1.29/agency`, httpOptions)
+    this.http.get(`https://api.crossref.org/works?query.author=${authors[0]}`, httpOptions)
+      .subscribe((response: any) => {
+        console.log(response);
+        let literatureRecommendations = []
+        response.message.items.forEach(element => {
+          //literatureRecommendations.push(element.title)
+          literatureRecommendations.push(element)
+        });
+        console.log(literatureRecommendations)
+      });
   }
 
   /*
@@ -102,14 +187,9 @@ export class ApiComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  schreibunterstuetzungen: Schreibunterstuetzung[] = [
-    { value: 'synonyms', viewValue: 'Synonyme' },
-    { value: 'antonyms', viewValue: 'Antonyme' },
-    { value: 'hypernyms', viewValue: 'Hyperonyme' },
-    { value: 'hyponyms', viewValue: 'Hyponyme' },
-    { value: 'meronyms', viewValue: 'Meronyme' },
-    { value: 'holonyms', viewValue: 'Holonyme' },
-  ];
+
+
+  schreibunterstuetzungen: Schreibunterstuetzung[]
 
 }
 

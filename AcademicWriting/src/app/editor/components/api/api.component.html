@@ -1,5 +1,5 @@
 <mat-form-field appearance="fill">
-  <mat-label>Schreibunterstützung</mat-label>
+  <mat-label>Optionen</mat-label>
   <mat-select [(ngModel)]="selectedSemanticRelation" name="unterstuetzung">
     <mat-option *ngFor="let schreibunterstuetzung of schreibunterstuetzungen" [value]="schreibunterstuetzung.value">
       {{schreibunterstuetzung.viewValue}}
@@ -12,7 +12,7 @@
   <mat-error *ngIf="semantische_relationen_FormControl.hasError('required')">
     Username is required
   </mat-error> -->
-<button mat-button (click)="getSemanticRelations()">
+<button mat-button (click)="startApi()">
   Bestätigen
 </button>
 <li *ngFor="let item of semanticRelationWordList; index as i">{{item}}</li>

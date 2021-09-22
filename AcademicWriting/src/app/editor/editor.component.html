@@ -1,20 +1,22 @@
 <iframe *ngIf="musikToggleActivelofi" width="0" height="0"
-        src="http://youtuberepeater.com/watch?v=5qap5aO4i9A&name=lofi+hip+hop+radio+beats+to+relax+study#gsc.tab=0"
-        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
+  src="http://youtuberepeater.com/watch?v=5qap5aO4i9A&name=lofi+hip+hop+radio+beats+to+relax+study#gsc.tab=0"
+  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen></iframe>
 <iframe *ngIf="musikToggleActiveclassic" width="0" height="0"
-        src="http://youtuberepeater.com/watch?v=E7EOjkGVmyo&name=1HOUR+ORIGINAL+RELAXING+PIANO+Jacob+39+s#gsc.tab=0"
-        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
+  src="http://youtuberepeater.com/watch?v=E7EOjkGVmyo&name=1HOUR+ORIGINAL+RELAXING+PIANO+Jacob+39+s#gsc.tab=0"
+  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen></iframe>
 <iframe *ngIf="musikToggleActiverain" width="0" height="0"
-        src="http://youtuberepeater.com/watch?v=gpmZjOQakbA&name=Leichte+Regentropfen+Sanfte+Regengerdusche+zum+Einschlafen+Lernen+Meditieren+und+Entspannen#gsc.tab=0"
-        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
+  src="http://youtuberepeater.com/watch?v=gpmZjOQakbA&name=Leichte+Regentropfen+Sanfte+Regengerdusche+zum+Einschlafen+Lernen+Meditieren+und+Entspannen#gsc.tab=0"
+  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen></iframe>
 
 <mat-toolbar>
   <span>Dokument</span>
   <span class="spacer"></span>
-
+  <button mat-button (click)="deleteUser()" matTooltip="Meinen Nutzeraccount löschen">
+    <mat-icon>delete</mat-icon>
+  </button>
   <button mat-icon-button [matMenuTriggerFor]="menu2" matTooltip="Musik einschalten">
     <mat-icon>music_note</mat-icon>
   </button>
@@ -61,10 +63,10 @@
         <button mat-icon-button matTooltip="Erstellen">
           <mat-icon (click)=addPaper() class="icon-sidenav">add</mat-icon>
         </button>
-        <button (click)=deletePaper() mat-icon-button matTooltip="Schließen">
+        <button (click)=deletePaper(currentPaper) mat-icon-button matTooltip="Schließen">
           <mat-icon class="icon-sidenav">close</mat-icon>
         </button>
-        <button (click)=updatePaper() mat-icon-button matTooltip="Bearbeiten">
+        <button (click)=updatePaper(currentPaper) mat-icon-button matTooltip="Bearbeiten">
           <mat-icon class="icon-sidenav">edit</mat-icon>
         </button>
       </div>
@@ -72,7 +74,11 @@
     <br>
     <span class="recent">Zuletzt geöffnete Dateien</span>
     <mat-list>
-      <mat-list-item *ngFor="let item of papers; index as i">{{item.title}}</mat-list-item>
+      <mat-list-item *ngFor="let paper of papers; index as i">
+        <button mat-button (click)="changePaper(i)" matTooltip="{{i}}"
+          [class.currentPaperHighlighter]="i ==currentPaper">{{paper.title}}</button>
+      </mat-list-item>
+
     </mat-list>
   </mat-sidenav>
 
@@ -107,8 +113,12 @@
       <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Schriftfarbe: <font color='Hex Code'>Text</font>">
         <mat-icon>format_color_text</mat-icon>
       </button>
-      <button (click)="openApiDialog()" mat-icon-button matTooltip="Semantic Relations">
-        <mat-icon>book</mat-icon>
+      <button (click)="openApiDialog(schreibunterstuetzungen)" mat-icon-button
+        matTooltip="Semantische Relationen finden">
+        <mat-icon>chrome_reader_mode</mat-icon>
+      </button>
+      <button (click)="openApiDialog(zitationssuchen)" mat-icon-button matTooltip="Zitationsvorschläge finden">
+        <mat-icon>library_books</mat-icon>
       </button>
       <mat-menu [hasBackdrop]="false" #menu="matMenu">
         <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
@@ -131,22 +141,25 @@
       <button (click)=convertPaper() mat-icon-button matTooltip="Pdf erstellen">
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
+      <button (click)=sentenceLength() mat-icon-button matTooltip="Durchschnittliche Satzlänge">
+        <mat-icon>assessment</mat-icon>
+      </button>
     </mat-grid-tile>
     <mat-grid-tile [rowspan]="14 * (currentPage+1)">
       <div class="page" *ngFor="let page of pages; index as i" [style.height]="sizePage.height + 'cm'"
-           [style.width]="sizePage.width + 'cm'" (click)="clickPage(i)">
+        [style.width]="sizePage.width + 'cm'" (click)="clickPage(i)">
         <div class="editor" [style.paddingTop]="paddingPage.top + 'cm'" [style.paddingRight]="paddingPage.right + 'cm'"
-             [style.paddingBottom]="paddingPage.bottom + 'cm'" [style.paddingLeft]="paddingPage.left + 'cm'"
-             [id]="'editor-' + i" contenteditable="true" (input)="inputContent($event['data'], i); wordCounter(i)">
+          [style.paddingBottom]="paddingPage.bottom + 'cm'" [style.paddingLeft]="paddingPage.left + 'cm'"
+          [id]="'editor-' + i" contenteditable="true" (input)="inputContent($event['data'], i); wordCounter(i)">
         </div>
       </div>
     </mat-grid-tile>
     <mat-grid-tile [rowspan]="14 * (currentPage+1)">
       <div class="page" *ngFor="let page of pages" [style.height]="sizePage.height + 'cm'"
-           [style.width]="sizePage.width + 'cm'">
+        [style.width]="sizePage.width + 'cm'">
         <div markdown class="content" [style.paddingTop]="paddingPage.top + 'cm'"
-             [style.paddingRight]="paddingPage.right + 'cm'" [style.paddingBottom]="paddingPage.bottom + 'cm'"
-             [style.paddingLeft]="paddingPage.left + 'cm'" [data]="page?.innerText">
+          [style.paddingRight]="paddingPage.right + 'cm'" [style.paddingBottom]="paddingPage.bottom + 'cm'"
+          [style.paddingLeft]="paddingPage.left + 'cm'" [data]="page?.innerText">
         </div>
       </div>
     </mat-grid-tile>
