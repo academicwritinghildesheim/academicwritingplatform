@@ -388,12 +388,13 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  public openApiDialog(schreibunterstuetzung): void {
+  public openApiDialog(schreibunterstuetzung, unterstuetzungstyp): void {
     const dialogRef = this.dialog.open(ApiComponent, {
       width: '250px',
       height: '250px',
     });
     dialogRef.componentInstance.schreibunterstuetzungen = schreibunterstuetzung
+    dialogRef.componentInstance.unterstuetzungstyp = unterstuetzungstyp
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
     });

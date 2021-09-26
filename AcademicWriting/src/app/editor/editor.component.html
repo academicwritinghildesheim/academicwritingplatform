@@ -14,6 +14,13 @@
 <mat-toolbar>
   <span>Dokument</span>
   <span class="spacer"></span>
+  <button (click)="openApiDialog(schreibunterstuetzungen, 0)" mat-icon-button
+    matTooltip="Semantische Relationen finden">
+    <mat-icon>chrome_reader_mode</mat-icon>
+  </button>
+  <button (click)="openApiDialog(zitationssuchen, 1)" mat-icon-button matTooltip="Zitationsvorschläge finden">
+    <mat-icon>library_books</mat-icon>
+  </button>
   <button mat-button (click)="deleteUser()" matTooltip="Meinen Nutzeraccount löschen">
     <mat-icon>delete</mat-icon>
   </button>
@@ -112,13 +119,6 @@
       </a>
       <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Schriftfarbe: <font color='Hex Code'>Text</font>">
         <mat-icon>format_color_text</mat-icon>
-      </button>
-      <button (click)="openApiDialog(schreibunterstuetzungen)" mat-icon-button
-        matTooltip="Semantische Relationen finden">
-        <mat-icon>chrome_reader_mode</mat-icon>
-      </button>
-      <button (click)="openApiDialog(zitationssuchen)" mat-icon-button matTooltip="Zitationsvorschläge finden">
-        <mat-icon>library_books</mat-icon>
       </button>
       <mat-menu [hasBackdrop]="false" #menu="matMenu">
         <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">

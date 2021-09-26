@@ -1,6 +1,6 @@
 <mat-form-field appearance="fill">
   <mat-label>Optionen</mat-label>
-  <mat-select [(ngModel)]="selectedSemanticRelation" name="unterstuetzung">
+  <mat-select [(ngModel)]="selectedCategory" name="unterstuetzung">
     <mat-option *ngFor="let schreibunterstuetzung of schreibunterstuetzungen" [value]="schreibunterstuetzung.value">
       {{schreibunterstuetzung.viewValue}}
     </mat-option>
@@ -15,4 +15,5 @@
 <button mat-button (click)="startApi()">
   Bestätigen
 </button>
-<li *ngFor="let item of semanticRelationWordList; index as i">{{item}}</li>
+<li *ngFor="let item of resultWordList; index as i">{{item}}</li>
+<li *ngFor="let item of resultLiteratureSearch; index as i">{{item.titel}} {{item.doi}}</li>
