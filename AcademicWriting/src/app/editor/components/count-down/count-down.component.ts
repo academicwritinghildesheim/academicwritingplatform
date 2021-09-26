@@ -11,6 +11,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
   @Input() stunden = 0;
   @Input() minuten = 0;
 
+
     private subscription: Subscription;
   
     public dateNow = new Date();
@@ -25,10 +26,40 @@ export class CountDownComponent implements OnInit, OnDestroy {
     public minutesToDday;
     public hoursToDday;
     //public daysToDday;
+    public timeAtStop=0;
+
+
+    public closeDialog(): void {
+      localStorage.setItem('stunden', this.hoursToDday)
+      localStorage.setItem('minuten', this.minutesToDday)
+      localStorage.setItem('sekunden', this.secondsToDday)
+/*       console.log(localStorage.getItem('stunden'));
+      console.log(localStorage.getItem('minuten'));
+      console.log(localStorage.getItem('sekunden')); */
+  
+      this.subscription.unsubscribe();
+    }
+  
+    public openDialog(): void {
+      this.timeAtStop= (parseInt(localStorage.getItem('sekunden')) *1000)  + (parseInt(localStorage.getItem('minuten')) *60000) + (parseInt(localStorage.getItem('stunden'))*360000 )
+      this.restart()
+/*       console.log(localStorage.getItem('stunden'));
+      console.log(localStorage.getItem('minuten'));
+      console.log(localStorage.getItem('sekunden')); */
+    
+
+    }
+  
+    restart(){
+      this.dDay = new Date();
+      this.subscription = interval(1000)
+      .subscribe(x => { this.getTimeDifferenceCountUp(); });
+
+    }
 
 
     private getTimeDifferenceCountUp () {
-        this.timeDifference = new Date().getTime()-this.dDay.getTime();
+        this.timeDifference = (new Date().getTime() -this.dDay.getTime()) + (this.timeAtStop);
         this.allocateTimeUnits(this.timeDifference);
     }
 
@@ -44,7 +75,9 @@ export class CountDownComponent implements OnInit, OnDestroy {
         //this.daysToDday = Math.floor((timeDifference) / (this.milliSecondsInASecond * this.minutesInAnHour * this.SecondsInAMinute * this.hoursInADay));
   }
 
+
     ngOnInit() {
+      
       this.dDay = new Date();
       if(this.countUporDown== "down"){
         let tempMinutes=this.dDay.getMinutes()+ this.minuten;
@@ -60,7 +93,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
                this.subscription = interval(1000)
            .subscribe(x => { this.getTimeDifferenceCountUp(); });
       }
-
+      
     }
 
    ngOnDestroy() {

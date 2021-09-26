@@ -103,7 +103,7 @@
       <mat-divider></mat-divider>
       <br>
       <mat-list-item>
-        <app-count-down></app-count-down>
+        <app-count-down *ngIf="timerSet"></app-count-down>
       </mat-list-item>
     </mat-list>
 

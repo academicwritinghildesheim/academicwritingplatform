@@ -45,6 +45,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   public wordcountlaenge = 0;
   public wordList: string[];
   public papers: any[];
+  public timerSet = true;
 
   public schreibunterstuetzungen = [
     { value: 'synonyms', viewValue: 'Synonyme' },
@@ -170,6 +171,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
 
   public ngOnInit(): void {
     this.getAllPapers();
+    this.timerSet = false;
   }
 
   public ngAfterViewChecked(): void {

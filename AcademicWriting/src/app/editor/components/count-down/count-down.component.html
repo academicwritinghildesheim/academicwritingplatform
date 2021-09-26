@@ -1,7 +1,11 @@
 <div class="timer">
-    <h4> Count down timer </h4>
+    <h2> Timer </h2>
     <!-- <span id="days"> {{daysToDday}} </span>Day(s) -->
-    <span id="hours"> {{hoursToDday}} </span>Hrs 
-    <span id="minutes"> {{minutesToDday}} </span>Min
-    <span id="seconds"> {{secondsToDday}} </span>S
+    <!-- noch einen rahmen oder so drum machen, besseres design -->
+    <span id="hours"> {{hoursToDday}} </span>:
+    <span id="minutes"> {{minutesToDday}} </span>:
+    <span id="seconds"> {{secondsToDday}} </span>
+    <br>
+    <button mat-raised-button (click)="openDialog()">Start</button>
+    <button mat-raised-button (click)="closeDialog()">Stop</button>
 </div>
