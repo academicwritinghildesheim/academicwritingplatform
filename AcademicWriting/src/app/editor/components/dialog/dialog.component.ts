@@ -8,8 +8,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogComponent implements OnInit, OnDestroy {
 
-  stunden = 2;
-  minuten = 2;
+  stunden = 0;
+  minuten = 25;
   isChecked = false;
 
   constructor(public dialogRef: MatDialogRef<DialogComponent>) { }
@@ -26,6 +26,8 @@ export class DialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (localStorage.getItem('timerChecked') == 'true') {
       this.isChecked = true
+      this.minuten = parseInt(localStorage.getItem('minuten')) * 60000
+
     }
   }
 

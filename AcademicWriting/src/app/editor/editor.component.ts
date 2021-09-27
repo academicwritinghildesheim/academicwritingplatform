@@ -16,6 +16,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   public musikToggleActivelofi = false;
   public musikToggleActiveclassic = false;
   public musikToggleActiverain = false;
+  public focusText = true;
 
   public sizePage = {
     width: 13,
@@ -175,40 +176,43 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   }
 
   public ngAfterViewChecked(): void {
-    //focus führt dazu, dass der Fokus wieder auf den Text zurückfällt -> daher kann input nicht befüllt werden.
-    //Mauszeiger auf der 2. seite -> buttons lassen sich nicht mehr betätigen
-    document.getElementById('editor-' + this.currentPage).focus();
+    if (this.focusText) {
+      //focus führt dazu, dass der Fokus wieder auf den Text zurückfällt -> daher kann input nicht befüllt werden.
+      //Mauszeiger auf der 2. seite -> buttons lassen sich nicht mehr betätigen
+      document.getElementById('editor-' + this.currentPage).focus();
 
-    if (this.runAfterViewChecked) {
-      if (this.currentChar) {
-        let str = this.pages[this.currentPage - 1].htmlContent;
-        const indexLastCloseDiv = str.lastIndexOf('</div>');
-        const indexLastBr = str.lastIndexOf('<br>');
-        let lastChar = str[indexLastCloseDiv - 1];
-        if (indexLastBr !== -1 && (indexLastBr + 4) === indexLastCloseDiv) {
-          lastChar = ' ';
+      if (this.runAfterViewChecked) {
+        if (this.currentChar) {
+          let str = this.pages[this.currentPage - 1].htmlContent;
+          const indexLastCloseDiv = str.lastIndexOf('</div>');
+          const indexLastBr = str.lastIndexOf('<br>');
+          let lastChar = str[indexLastCloseDiv - 1];
+          if (indexLastBr !== -1 && (indexLastBr + 4) === indexLastCloseDiv) {
+            lastChar = ' ';
+          }
+
+          if (indexLastCloseDiv !== -1) {
+            str = str.slice(0, indexLastCloseDiv - 1) + str.slice(indexLastCloseDiv);
+          } else {
+            str = str.slice(0, str.length - 1);
+          }
+          this.pages[this.currentPage - 1].htmlContent = str;
+
+          if (this.pages[this.currentPage].htmlContent) {
+            this.pages[this.currentPage].htmlContent = lastChar + this.pages[this.currentPage].htmlContent;
+          } else {
+            this.pages[this.currentPage].htmlContent = lastChar;
+          }
         }
 
-        if (indexLastCloseDiv !== -1) {
-          str = str.slice(0, indexLastCloseDiv - 1) + str.slice(indexLastCloseDiv);
-        } else {
-          str = str.slice(0, str.length - 1);
+        for (let i = 0; i < this.pages.length; i++) {
+          this.element = document.getElementById('editor-' + i);
+          this.element.innerHTML = this.pages[i].htmlContent;
         }
-        this.pages[this.currentPage - 1].htmlContent = str;
-
-        if (this.pages[this.currentPage].htmlContent) {
-          this.pages[this.currentPage].htmlContent = lastChar + this.pages[this.currentPage].htmlContent;
-        } else {
-          this.pages[this.currentPage].htmlContent = lastChar;
-        }
+        this.runAfterViewChecked = false;
       }
-
-      for (let i = 0; i < this.pages.length; i++) {
-        this.element = document.getElementById('editor-' + i);
-        this.element.innerHTML = this.pages[i].htmlContent;
-      }
-      this.runAfterViewChecked = false;
     }
+
   }
 
   public wordCounter(pageIndex: number): void {
@@ -391,7 +395,9 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   }
 
   public openApiDialog(schreibunterstuetzung, unterstuetzungstyp): void {
+    this.focusText = false
     const dialogRef = this.dialog.open(ApiComponent, {
+      autoFocus: true,
       width: '250px',
       height: '250px',
     });
@@ -399,6 +405,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     dialogRef.componentInstance.unterstuetzungstyp = unterstuetzungstyp
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      this.focusText = true
     });
   }
 
