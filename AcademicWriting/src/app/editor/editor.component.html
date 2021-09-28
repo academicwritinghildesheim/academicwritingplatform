@@ -138,9 +138,15 @@
     <mat-grid-tile class="menu" rowspan="1">
       <h2>Preview</h2>
       <span class="spacer"></span>
-      <button (click)=convertPaper() mat-icon-button matTooltip="Pdf erstellen">
-        <mat-icon>picture_as_pdf</mat-icon>
+      <button (click)=copyText() mat-icon-button matTooltip="Text kopieren">
+        <mat-icon>content_copy_rounded</mat-icon>
       </button>
+      <a href="https://md2pdf.netlify.app" target='_blank' style="color: black">
+        <button mat-icon-button matTooltip="Pdf erstellen">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+      </a>
+
       <button (click)=sentenceLength() mat-icon-button matTooltip="Durchschnittliche Satzlänge">
         <mat-icon>assessment</mat-icon>
       </button>

@@ -30,8 +30,6 @@ import { RegistrierungsDialogComponent } from './registrierungs-dialog/registrie
 import { ApiComponent } from './editor/components/api/api.component';
 import { MatSelectModule } from '@angular/material/select';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
