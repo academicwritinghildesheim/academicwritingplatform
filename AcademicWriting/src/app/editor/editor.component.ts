@@ -1,10 +1,10 @@
-import { MatDialog } from '@angular/material/dialog';
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
-import { DialogComponent } from './components/dialog/dialog.component';
-import { ApiComponent } from './components/api/api.component';
-import { MarkdownService } from 'ngx-markdown';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
+import {DialogComponent} from './components/dialog/dialog.component';
+import {ApiComponent} from './components/api/api.component';
+import {MarkdownService} from 'ngx-markdown';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -52,16 +52,16 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   public averageWordsInSentence = 0
 
   public schreibunterstuetzungen = [
-    { value: 'synonyms', viewValue: 'Synonyme' },
-    { value: 'antonyms', viewValue: 'Antonyme' },
-    { value: 'hypernyms', viewValue: 'Hyperonyme' },
-    { value: 'hyponyms', viewValue: 'Hyponyme' },
-    { value: 'meronyms', viewValue: 'Meronyme' },
-    { value: 'holonyms', viewValue: 'Holonyme' },
+    {value: 'synonyms', viewValue: 'Synonyme'},
+    {value: 'antonyms', viewValue: 'Antonyme'},
+    {value: 'hypernyms', viewValue: 'Hyperonyme'},
+    {value: 'hyponyms', viewValue: 'Hyponyme'},
+    {value: 'meronyms', viewValue: 'Meronyme'},
+    {value: 'holonyms', viewValue: 'Holonyme'},
   ];
   public zitationssuchen = [
-    { value: 'doisuche', viewValue: 'Suche mit DOI' },
-    { value: 'titelsuche', viewValue: 'Suche mit Titel' },
+    {value: 'doisuche', viewValue: 'Suche mit DOI'},
+    {value: 'titelsuche', viewValue: 'Suche mit Titel'},
   ];
 
   public markdown = `# Markdown Cheat Sheet
@@ -168,9 +168,9 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   `;
 
   constructor(public dialog: MatDialog,
-    private markdownService: MarkdownService,
-    private readonly http: HttpClient,
-    private router: Router) {
+              private markdownService: MarkdownService,
+              private readonly http: HttpClient,
+              private router: Router) {
   }
 
   public ngOnInit(): void {
@@ -247,7 +247,6 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   }
 
 
-
   public sentenceLength(): void {
 
     const httpOptions = {
@@ -290,7 +289,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       title: 'Dokument',
       last_modified: new Date(),
       author_id: localStorage.getItem('user_id')
-    }
+    };
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -299,31 +298,31 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     };
     this.http.post(`https://academicwritinghildesheim.herokuapp.com/api/paper`, body, httpOptions)
       .subscribe(wordList => {
-        this.papers.push(body)
+        this.papers.push(body);
         console.log(wordList);
 
       });
   }
 
   public changePaper(i): void {
-    console.log(this.papers[i].content)
-    this.pages[0].htmlContent = this.papers[i].content
+    console.log(this.papers[i].content);
+    this.pages[0].htmlContent = this.papers[i].content;
 
-    //this.currentChar = char
+    // this.currentChar = char
     this.runAfterViewChecked = true;
-    this.ngAfterViewChecked()
-    this.pages[0].innerText = this.papers[i].content
-    this.currentPaper = i
+    this.ngAfterViewChecked();
+    this.pages[0].innerText = this.papers[i].content;
+    this.currentPaper = i;
 
     // TODO: choose one paper which is to be displayed
     // what happens to current paper? auto-save? no save?
     // update function (put request) = save?
-    //load current paper again from backend? after update the paper is not up2date when loaded from frontend only
+    // load current paper again from backend? after update the paper is not up2date when loaded from frontend only
   }
 
   public updatePaper(papers_index): void {
-    const paper_id = this.papers[papers_index].id
-    console.log(papers_index)
+    const paper_id = this.papers[papers_index].id;
+    console.log(papers_index);
 
     let text = '';
     for (const page of this.pages) {
@@ -360,13 +359,13 @@ export class EditorComponent implements OnInit, AfterViewChecked {
 
     this.http.delete('https://academicwritinghildesheim.herokuapp.com/api/user?username=test2', httpOptions)
       .subscribe(user => {
-        console.log(user)
+        console.log(user);
       });
 
   }
 
   public deletePaper(papers_index): void {
-    const paper_id = this.papers[papers_index].id
+    const paper_id = this.papers[papers_index].id;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -377,9 +376,17 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     this.http.delete(`https://academicwritinghildesheim.herokuapp.com/api/paper?id=${paper_id}`, httpOptions)
       .subscribe(wordList => {
         console.log(wordList);
-        this.papers.splice(papers_index, 1)
-
+        this.papers.splice(papers_index, 1);
       });
+  }
+
+  public copyText(): void {
+    let text = '';
+    for (const page of this.pages) {
+      text += page.innerText;
+    }
+
+    navigator.clipboard.writeText(text).then();
   }
 
   public convertPaper(): void {
@@ -414,8 +421,8 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       width: '250px',
       height: '250px',
     });
-    dialogRef.componentInstance.schreibunterstuetzungen = schreibunterstuetzung
-    dialogRef.componentInstance.unterstuetzungstyp = unterstuetzungstyp
+    dialogRef.componentInstance.schreibunterstuetzungen = schreibunterstuetzung;
+    dialogRef.componentInstance.unterstuetzungstyp = unterstuetzungstyp;
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       this.focusText = true
