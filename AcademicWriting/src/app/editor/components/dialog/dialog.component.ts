@@ -26,7 +26,6 @@ export class DialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (localStorage.getItem('timerChecked') == 'true') {
       this.isChecked = true
-      this.minuten = parseInt(localStorage.getItem('minuten')) * 60000
 
     }
   }

@@ -91,7 +91,7 @@
 
   <mat-sidenav #sidenavRight opened mode="side" opened class="side-nav" position="end">
     <mat-toolbar class="sidenav-toolbar">
-      <span class="file">Statistiken</span>
+      <span class="file">Statistiken/Tools</span>
     </mat-toolbar>
     <mat-list>
       <mat-list-item>
@@ -99,6 +99,10 @@
       </mat-list-item>
       <mat-list-item>
         <div>Wortanzahl: <span style="margin-right:1rem" id="wordCount">{{ wordcountlaenge }}</span></div>
+      </mat-list-item>
+      <mat-list-item>
+        <div>Durchschnittliche Satzlänge: <span style="margin-right:1rem" id="wordCount">{{ averageWordsInSentence
+            }}</span></div>
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item>

@@ -31,6 +31,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
   public secondsAtStop = 0
   public minutesAtStop = 0
   public hoursAtStop = 0
+  public timeStopped = false;
 
 
   public stopTimer(): void {
@@ -44,6 +45,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
     this.timeAtStop = this.timeDifference
     console.log(this.timeAtStop)
     this.subscription.unsubscribe();
+    this.timeStopped = true;
   }
 
   public startTimer(): void {
@@ -67,7 +69,10 @@ export class CountDownComponent implements OnInit, OnDestroy {
         this.timerStarted = true
       }
     } else {
-      this.restart()
+      if (this.timeStopped) {
+        this.restart()
+      }
+
 
     }
 
@@ -82,6 +87,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
   restart() {
     //this.dDay = new Date();
     this.dDay.setTime(new Date().getTime() - this.timeAtStop)
+    this.timeStopped = false;
     this.subscription = interval(1000)
       .subscribe(x => { this.getTimeDifferenceCountUp(); });
 

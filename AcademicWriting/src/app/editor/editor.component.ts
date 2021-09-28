@@ -47,6 +47,9 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   public wordList: string[];
   public papers: any[];
   public timerSet = true;
+  public numberOfSentences = 0;
+  public sentences: string[];
+  public averageWordsInSentence = 0
 
   public schreibunterstuetzungen = [
     { value: 'synonyms', viewValue: 'Synonyme' },
@@ -216,6 +219,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   }
 
   public wordCounter(pageIndex: number): void {
+    let sentences = 0
     let wordcountlaenge = 0;
     for (let i = 0; i < pageIndex + 1; i++) {
       const html = this.markdownService.compile(this.pages[i].innerText);
@@ -223,11 +227,20 @@ export class EditorComponent implements OnInit, AfterViewChecked {
         .replace(/&#160;/g, ' ') // leerzeichen soll als ' ' angezeigt werden
         .replace(/&#10;/g, ' '); // Zeilenumbruch soll als ' ' angezeigt werden
       this.wordList = text ? text.split(/\s+/) : []; // Wörterliste
+      this.sentences = text ? text.split(/[\.!?]+/) : [];
+      sentences += this.sentences.length - 1; // Anzahl der Wörter
       wordcountlaenge += this.wordList.length - 1; // Anzahl der Wörter
 
     }
+    this.numberOfSentences = sentences;
     this.wordcountlaenge = wordcountlaenge;
+    if (this.numberOfSentences > 0) {
+      this.averageWordsInSentence = this.wordcountlaenge / this.numberOfSentences;
+    }
+
+
   }
+
 
   public openDialog(): void {
     this.dialog.open(DialogComponent);

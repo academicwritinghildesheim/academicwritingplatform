@@ -40,7 +40,7 @@ export class ApiComponent implements OnInit {
   public resultWordList: any;
   public resultLiteratureSearch: any;
   public unterstuetzungstyp: any;
-  public suchWort = "zeigen";
+  public suchWort = "";
 
 
   public semantische_relationen_FormControl = new FormControl('', [
@@ -98,9 +98,8 @@ export class ApiComponent implements OnInit {
   TODO: change email to email of registered user? or some other email?*/
   public getDOIbyTitel(): void {
     //TODO: remove static title wenn texteingabe in this.suchwort funktioniert
-    let title = "Word2Vec"
-    title = this.suchWort
-    title = "Word2Vec"
+    let title = this.suchWort
+
     console.log(this.suchWort)
     console.log(this.selectedCategory)
 
@@ -121,7 +120,7 @@ export class ApiComponent implements OnInit {
   /*überprüft ob DOI in crossref database vorhanden ist- nur bei vorhandener DOI in crossref wird getSimilarLiteraturebyDOI aufgerufen*/
   public checkDOIstatus(doi: string): void {
     //TODO: remove static doi wenn texteingabe in this.suchwort funktioniert
-    doi = "10.7717/peerj.4375"
+    //doi = "10.7717/peerj.4375"
 
     const httpOptions = {
       headers: new HttpHeaders({
