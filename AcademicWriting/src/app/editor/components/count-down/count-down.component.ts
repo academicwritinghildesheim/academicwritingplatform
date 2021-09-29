@@ -35,6 +35,19 @@ export class CountDownComponent implements OnInit, OnDestroy {
 
 
   public stopTimer(): void {
+    if (this.timeStopped) {
+      this.subscription.unsubscribe();
+      this.timeAtStop = 0
+      this.secondsToDday = 0
+      this.minutesToDday = 0
+      this.hoursToDday = 0
+    }
+    else {
+      this.timeAtStop = this.timeDifference
+      console.log(this.timeAtStop)
+      this.subscription.unsubscribe();
+      this.timeStopped = true;
+    }
 
 
     //window.alert("sometext")
@@ -42,10 +55,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
           console.log(localStorage.getItem('minuten'));
           console.log(localStorage.getItem('sekunden')); */
     //this.timeAtStop = (parseInt(localStorage.getItem('sekunden')) * 1000) + (parseInt(localStorage.getItem('minuten')) * 60000) + (parseInt(localStorage.getItem('stunden')) * 360000)
-    this.timeAtStop = this.timeDifference
-    console.log(this.timeAtStop)
-    this.subscription.unsubscribe();
-    this.timeStopped = true;
+
   }
 
   public startTimer(): void {
@@ -96,7 +106,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
 
   private getTimeDifferenceCountUp() {
     this.timeDifference = (new Date().getTime() - this.dDay.getTime() - (this.secondsAtStop * 1000 + this.minutesAtStop * 60000 + this.hoursAtStop * 360000));
-    console.log(this.timeAtStop)
+    //console.log(this.timeAtStop)
     if (this.timeDifference > 1500000) {
       window.alert("Nimm dir ne Pause, iss ein Snickers")
       this.subscription.unsubscribe();

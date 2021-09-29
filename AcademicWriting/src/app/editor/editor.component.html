@@ -44,9 +44,9 @@
     </div>
   </mat-menu>
 
-  <button mat-button (click)="openDialog()" matTooltip="Timer stellen">
+  <!--  <button mat-button (click)="openDialog()" matTooltip="Timer stellen">
     <mat-icon>alarm</mat-icon>
-  </button>
+  </button> -->
   <button mat-icon-button (click)="sidenavLeft.toggle()" matTooltip="Dateiübersicht öffnen">
     <mat-icon>vertical_split</mat-icon>
   </button>
@@ -153,10 +153,10 @@
           <mat-icon>picture_as_pdf</mat-icon>
         </button>
       </a>
-
+      <!-- 
       <button (click)=sentenceLength() mat-icon-button matTooltip="Durchschnittliche Satzlänge">
         <mat-icon>assessment</mat-icon>
-      </button>
+      </button> -->
     </mat-grid-tile>
     <mat-grid-tile [rowspan]="14 * (currentPage+1)">
       <div class="page" *ngFor="let page of pages; index as i" [style.height]="sizePage.height + 'cm'"

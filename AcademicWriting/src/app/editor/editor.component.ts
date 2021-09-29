@@ -1,10 +1,12 @@
-import {MatDialog} from '@angular/material/dialog';
-import {AfterViewChecked, Component, OnInit} from '@angular/core';
-import {DialogComponent} from './components/dialog/dialog.component';
-import {ApiComponent} from './components/api/api.component';
-import {MarkdownService} from 'ngx-markdown';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Router} from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { ApiComponent } from './components/api/api.component';
+import { MarkdownService } from 'ngx-markdown';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+
 
 
 @Component({
@@ -52,16 +54,16 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   public averageWordsInSentence = 0
 
   public schreibunterstuetzungen = [
-    {value: 'synonyms', viewValue: 'Synonyme'},
-    {value: 'antonyms', viewValue: 'Antonyme'},
-    {value: 'hypernyms', viewValue: 'Hyperonyme'},
-    {value: 'hyponyms', viewValue: 'Hyponyme'},
-    {value: 'meronyms', viewValue: 'Meronyme'},
-    {value: 'holonyms', viewValue: 'Holonyme'},
+    { value: 'synonyms', viewValue: 'Synonyme' },
+    { value: 'antonyms', viewValue: 'Antonyme' },
+    { value: 'hypernyms', viewValue: 'Hyperonyme' },
+    { value: 'hyponyms', viewValue: 'Hyponyme' },
+    { value: 'meronyms', viewValue: 'Meronyme' },
+    { value: 'holonyms', viewValue: 'Holonyme' },
   ];
   public zitationssuchen = [
-    {value: 'doisuche', viewValue: 'Suche mit DOI'},
-    {value: 'titelsuche', viewValue: 'Suche mit Titel'},
+    { value: 'doisuche', viewValue: 'Suche mit DOI' },
+    { value: 'titelsuche', viewValue: 'Suche mit Titel' },
   ];
 
   public markdown = `# Markdown Cheat Sheet
@@ -168,9 +170,9 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   `;
 
   constructor(public dialog: MatDialog,
-              private markdownService: MarkdownService,
-              private readonly http: HttpClient,
-              private router: Router) {
+    private markdownService: MarkdownService,
+    private readonly http: HttpClient,
+    private router: Router) {
   }
 
   public ngOnInit(): void {
@@ -274,6 +276,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       .subscribe((wordList: any) => {
         console.log(wordList);
         this.papers = wordList;
+        this.changePaper(this.papers.length - 1)
 
       });
   }
@@ -286,7 +289,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     console.log(text);
     const body = {
       content: text,
-      title: 'Dokument',
+      title: "Beispieldokument " + (this.papers.length + 1),
       last_modified: new Date(),
       author_id: localStorage.getItem('user_id')
     };
@@ -298,7 +301,9 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     };
     this.http.post(`https://academicwritinghildesheim.herokuapp.com/api/paper`, body, httpOptions)
       .subscribe(wordList => {
-        this.papers.push(body);
+        // this.papers.push(body);
+        //wir brauchen die id des neu angelegten papers, um es löschen zu können -> daher reicht das pushen von dem paper object aus dem frontend nicht aus 
+        this.getAllPapers()
         console.log(wordList);
 
       });
@@ -329,6 +334,12 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       text += page.innerText;
     }
     console.log(text);
+    const updated_paper = {
+      content: text,
+      title: this.papers[papers_index].title,
+      last_modified: new Date(),
+      author_id: localStorage.getItem('user_id')
+    }
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -337,14 +348,10 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       })
     };
 
-    this.http.put(`https://academicwritinghildesheim.herokuapp.com/api/paper?id=${paper_id}`, {
-      content: text,
-      title: this.papers[papers_index].title,
-      last_modified: new Date(),
-      author_id: localStorage.getItem('user_id')
-    }, httpOptions)
+    this.http.put(`https://academicwritinghildesheim.herokuapp.com/api/paper?id=${paper_id}`, updated_paper, httpOptions)
       .subscribe(wordList => {
         console.log(wordList);
+        this.papers[papers_index] = updated_paper;
 
       });
   }
@@ -377,6 +384,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       .subscribe(wordList => {
         console.log(wordList);
         this.papers.splice(papers_index, 1);
+        this.changePaper(this.papers.length - 1)
       });
   }
 
