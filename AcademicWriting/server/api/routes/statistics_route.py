@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, make_response, request
-from nltk.tokenize import sent_tokenize, word_tokenize
 import string
+import re
 
 bp = Blueprint('statistics', __name__, url_prefix='/api')
 
@@ -15,17 +15,18 @@ def get_average_sentence_length():
     if text is None or "":
         return jsonify({'success': False}), 400, {'ContentType': 'application/json'}
 
-    tokenized_text = sent_tokenize(text)
+    tokenized_text = re.split(';|\.|\?|\!', text)
+    tokenized_text = list(filter(None, tokenized_text))
     sentence_count = len(tokenized_text)
 
     word_count = 0
     for sentence in tokenized_text:
         # remove punctuation symbols as they are counted as separate tokens
-        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
-        tokenized_word = word_tokenize(sentence)
+        tokenized_word = sentence.split(' ')
+        tokenized_word = list(filter(None, tokenized_word))
         word_count += len(tokenized_word)
 
-    if word_count is 0:
+    if word_count == 0:
         return jsonify({'success': False}), 400, {'ContentType': 'application/json'}
 
     avg_sentence_length = word_count / sentence_count
