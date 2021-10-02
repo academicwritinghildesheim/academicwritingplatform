@@ -52,6 +52,8 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   public numberOfSentences = 0;
   public sentences: string[];
   public averageWordsInSentence = 0
+  public averageSentenceLength = 0
+  public selectedCategory: string;
 
   public schreibunterstuetzungen = [
     { value: 'synonyms', viewValue: 'Synonyme' },
@@ -66,108 +68,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     { value: 'titelsuche', viewValue: 'Suche mit Titel' },
   ];
 
-  public markdown = `# Markdown Cheat Sheet
-
-  Thanks for visiting [The Markdown Guide](https://www.markdownguide.org)!
-
-  This Markdown cheat sheet provides a quick overview of all the Markdown syntax elements. It can’t cover every edge case, so if you need more information about any of these elements, refer to the reference guides for [basic syntax](https://www.markdownguide.org/basic-syntax) and [extended syntax](https://www.markdownguide.org/extended-syntax).
-
-  ## Basic Syntax
-
-  These are the elements outlined in John Gruber’s original design document. All Markdown applications support these elements.
-
-  ### Heading
-
-  # H1
-  ## H2
-  ### H3
-
-  ### Bold
-
-  **bold text**
-
-  ### Italic
-
-  *italicized text*
-
-  ### Blockquote
-
-  > blockquote
-
-  ### Ordered List
-
-  1. First item
-  2. Second item
-  3. Third item
-
-  ### Unordered List
-
-  - First item
-  - Second item
-  - Third item
-
-  ### Code
-
-  \`code\`
-
-  ### Horizontal Rule
-
-  ---
-
-  ### Link
-
-  [title](https://www.example.com)
-
-  ### Image
-
-  ![alt text](image.jpg)
-
-  ## Extended Syntax
-
-  These elements extend the basic syntax by adding additional features. Not all Markdown applications support these elements.
-
-  ### Table
-
-  | Syntax | Description |
-  | ----------- | ----------- |
-  | Header | Title |
-  | Paragraph | Text |
-
-  ### Fenced Code Block
-
-  \`\`\`
-  {
-    "firstName": "John",
-    "lastName": "Smith",
-    "age": 25
-  }
-  \`\`\`
-
-  ### Footnote
-
-  Here's a sentence with a footnote. [^1]
-
-  [^1]: This is the footnote.
-
-  ### Heading ID
-
-  ### My Great Heading {#custom-id}
-
-  ### Definition List
-
-  term
-  : definition
-
-  ### Strikethrough
-
-  ~~The world is flat.~~
-
-  ### Task List
-
-  - [x] Write the press release
-  - [ ] Update the website
-  - [ ] Contact the media
-  `;
+  public markdown = ``;
 
   constructor(public dialog: MatDialog,
     private markdownService: MarkdownService,
@@ -230,7 +131,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
         .replace(/&#10;/g, ' '); // Zeilenumbruch soll als ' ' angezeigt werden
       this.wordList = text ? text.split(/\s+/) : []; // Wörterliste
       this.sentences = text ? text.split(/[\.!?]+/) : [];
-      sentences += this.sentences.length - 1; // Anzahl der Wörter
+      sentences += this.sentences.length; // Anzahl der Wörter
       wordcountlaenge += this.wordList.length - 1; // Anzahl der Wörter
 
     }
@@ -248,21 +149,6 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     this.dialog.open(DialogComponent);
   }
 
-
-  public sentenceLength(): void {
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
-    };
-
-    this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/statistics/avg_sentence_length?text=This is a sentence. This is one too! How about this one?`, httpOptions)
-      .subscribe(wordList => {
-        console.log(wordList);
-
-      });
-  }
 
   public getAllPapers(): void {
 
@@ -282,13 +168,8 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   }
 
   public addPaper(): void {
-    let text = '';
-    for (const page of this.pages) {
-      text += page.innerText;
-    }
-    console.log(text);
     const body = {
-      content: text,
+      content: this.getwholeText(),
       title: "Beispieldokument " + (this.papers.length + 1),
       last_modified: new Date(),
       author_id: localStorage.getItem('user_id')
@@ -309,15 +190,15 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  public changePaper(i): void {
-    console.log(this.papers[i].content);
-    this.pages[0].htmlContent = this.papers[i].content;
+  public changePaper(papers_index: number): void {
+    console.log(this.papers[papers_index].content);
+    this.pages[0].htmlContent = this.papers[papers_index].content;
 
     // this.currentChar = char
     this.runAfterViewChecked = true;
     this.ngAfterViewChecked();
-    this.pages[0].innerText = this.papers[i].content;
-    this.currentPaper = i;
+    this.pages[0].innerText = this.papers[papers_index].content;
+    this.currentPaper = papers_index;
 
     // TODO: choose one paper which is to be displayed
     // what happens to current paper? auto-save? no save?
@@ -325,17 +206,10 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     // load current paper again from backend? after update the paper is not up2date when loaded from frontend only
   }
 
-  public updatePaper(papers_index): void {
+  public updatePaper(papers_index: number): void {
     const paper_id = this.papers[papers_index].id;
-    console.log(papers_index);
-
-    let text = '';
-    for (const page of this.pages) {
-      text += page.innerText;
-    }
-    console.log(text);
     const updated_paper = {
-      content: text,
+      content: this.getwholeText(),
       title: this.papers[papers_index].title,
       last_modified: new Date(),
       author_id: localStorage.getItem('user_id')
@@ -371,7 +245,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
 
   }
 
-  public deletePaper(papers_index): void {
+  public deletePaper(papers_index: number): void {
     const paper_id = this.papers[papers_index].id;
     const httpOptions = {
       headers: new HttpHeaders({
@@ -389,40 +263,36 @@ export class EditorComponent implements OnInit, AfterViewChecked {
   }
 
   public copyText(): void {
-    let text = '';
-    for (const page of this.pages) {
-      text += page.innerText;
-    }
 
-    navigator.clipboard.writeText(text).then();
+
+    navigator.clipboard.writeText(this.getwholeText()).then();
   }
 
-  public convertPaper(): void {
-    let markdown = '';
-    for (const page of this.pages) {
-      markdown = this.markdownService.compile(page.htmlContent);
-      // const text = markdown.replace(/<[^>]*>/g, '').toString()
-    }
-    console.log(markdown);
+  /*   public convertPaper(): void {
+      let markdown = '';
+      for (const page of this.pages) {
+        markdown = this.markdownService.compile(page.htmlContent);
+        // const text = markdown.replace(/<[^>]*>/g, '').toString()
+      }
+      console.log(markdown);
+  
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          // 'Authorization': `${localStorage.getItem("access_token")}`
+        })
+      };
+  
+      this.http.post(`https://md-to-pdf.herokuapp.com/`, {
+        markdown: '<p>markdown</p>',
+      }, httpOptions)
+        .subscribe(wordList => {
+          console.log(wordList);
+  
+        });
+    } */
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        // 'Authorization': `${localStorage.getItem("access_token")}`
-        Accept: '*/*',
-      })
-    };
-
-    this.http.post(`https://md-to-pdf.herokuapp.com/`, {
-      markdown: '<p>markdown</p>',
-    }, httpOptions)
-      .subscribe(wordList => {
-        console.log(wordList);
-
-      });
-  }
-
-  public openApiDialog(schreibunterstuetzung, unterstuetzungstyp): void {
+  public openApiDialog(schreibunterstuetzung: any, unterstuetzungstyp: any): void {
     this.focusText = false
     const dialogRef = this.dialog.open(ApiComponent, {
       autoFocus: true,
@@ -437,11 +307,26 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  public clickPage(i): void {
+  public getAverageSentenceLength(): void {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        //Authorization: `${localStorage.getItem('access_token')}`,
+      })
+    };
+
+    this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/avg_sentence_length/?text=${this.getwholeText()}`, httpOptions)
+      .subscribe((response: any) => {
+        this.averageSentenceLength = response
+      });
+
+  }
+
+  public clickPage(i: number): void {
     this.currentPage = i;
   }
 
-  public inputContent(char, i): void {
+  public inputContent(char: string, i: number): void {
     this.element = document.getElementById('editor-' + i);
     const heightContent = this.element.offsetHeight * 2.54 / 96;
     this.pages[i].htmlContent = this.element.innerHTML;
@@ -461,6 +346,7 @@ export class EditorComponent implements OnInit, AfterViewChecked {
       this.currentPage = i + 1;
       this.runAfterViewChecked = true;
     }
+    this.getAverageSentenceLength()
   }
 
   public logout(): void {
@@ -493,6 +379,14 @@ export class EditorComponent implements OnInit, AfterViewChecked {
     } else {
       this.musikToggleActiverain = true;
     }
+  }
+
+  public getwholeText(): string {
+    let text = '';
+    for (const page of this.pages) {
+      text += page.innerText;
+    }
+    return text;
   }
 }
 

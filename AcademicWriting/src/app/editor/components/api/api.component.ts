@@ -90,7 +90,7 @@ export class ApiComponent implements OnInit {
 
   }
   public openDialog(): void {
-    this.dialog.open(DialogElementsExampleDialogComponent, {
+    this.dialog.open(ApiDialog, {
       width: '250px',
     });
   }
@@ -210,8 +210,8 @@ export class ApiComponent implements OnInit {
 }
 
 
-export class DialogElementsExampleDialogComponent {
-  constructor(public dialogRef: MatDialogRef<DialogElementsExampleDialogComponent>) { }
+export class ApiDialog {
+  constructor(public dialogRef: MatDialogRef<ApiDialog>) { }
 
 
 

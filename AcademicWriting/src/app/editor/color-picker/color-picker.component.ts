@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-color-picker',
@@ -41,7 +41,9 @@ export class ColorPickerComponent {
 
   public toggleColors(): void {
     this.show = !this.show;
-    navigator.clipboard.writeText(this.color).then();
+    const color_string = `<font color='${this.color}'></font>`
+    navigator.clipboard.writeText(color_string).then();
+    //navigator.clipboard.writeText(this.color).then();
   }
 
   public changeColor(color: string): void {
