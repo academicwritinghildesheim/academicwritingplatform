@@ -47,7 +47,8 @@
     <button mat-icon-button matTooltip="Suche auf Google Scholar">
       <mat-icon>search</mat-icon>
     </button></a>
-  <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Example icon-button with a menu">
+  <button mat-icon-button [matMenuTriggerFor]="menu3" aria-label="Example icon-button with a menu"
+    matTooltip="Weitere Schreibunterstützungen">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu3="matMenu">
@@ -125,11 +126,9 @@
       </mat-list-item>
 
       <mat-list-item>
-        <app-count-down *ngIf="!timerSet"></app-count-down>
+        <app-count-down></app-count-down>
       </mat-list-item>
-      <mat-list-item>
 
-      </mat-list-item>
     </mat-list>
 
   </mat-sidenav>
@@ -142,10 +141,11 @@
           <mat-icon>lightbulb</mat-icon>
         </button>
       </a>
-      <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Schriftfarbe: <font color='Hex Code'>Text</font>">
+      <button mat-icon-button [matMenuTriggerFor]="colormenu"
+        matTooltip="Schriftfarbe: <font color='Hex Code'>Text</font>">
         <mat-icon>format_color_text</mat-icon>
       </button>
-      <mat-menu [hasBackdrop]="false" #menu="matMenu">
+      <mat-menu [hasBackdrop]="false" #colormenu="matMenu">
         <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
           <app-color-picker></app-color-picker>
         </div>

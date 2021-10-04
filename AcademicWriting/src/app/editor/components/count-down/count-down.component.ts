@@ -16,10 +16,10 @@ export class CountDownComponent implements OnInit, OnDestroy {
 
   public dateNow = new Date();
   public dDay = new Date('May 16 2021 00:00:00');
-  milliSecondsInASecond = 1000;
-  hoursInADay = 24;
-  minutesInAnHour = 60;
-  SecondsInAMinute = 60;
+  public milliSecondsInASecond = 1000;
+  public hoursInADay = 24;
+  public minutesInAnHour = 60;
+  public SecondsInAMinute = 60;
 
   public timeDifference;
   public secondsToDday = 0
@@ -28,9 +28,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
   //public daysToDday;
   public timeAtStop = 0;
   public timerStarted = false;
-  public secondsAtStop = 0
-  public minutesAtStop = 0
-  public hoursAtStop = 0
+
   public timeStopped = false;
 
 
@@ -94,7 +92,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
 
   }
 
-  restart() {
+  public restart() {
     //this.dDay = new Date();
     this.dDay.setTime(new Date().getTime() - this.timeAtStop)
     this.timeStopped = false;
@@ -105,7 +103,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
 
 
   private getTimeDifferenceCountUp() {
-    this.timeDifference = (new Date().getTime() - this.dDay.getTime() - (this.secondsAtStop * 1000 + this.minutesAtStop * 60000 + this.hoursAtStop * 360000));
+    this.timeDifference = (new Date().getTime() - this.dDay.getTime());
     //console.log(this.timeAtStop)
     if (this.timeDifference > 1500000) {
       window.alert("Nimm dir ne Pause, iss ein Snickers")
@@ -120,7 +118,7 @@ export class CountDownComponent implements OnInit, OnDestroy {
     this.allocateTimeUnits(this.timeDifference);
   }
 
-  private allocateTimeUnits(timeDifference) {
+  private allocateTimeUnits(timeDifference: number) {
     this.secondsToDday = Math.floor((timeDifference) / (this.milliSecondsInASecond) % this.SecondsInAMinute);
     this.minutesToDday = Math.floor((timeDifference) / (this.milliSecondsInASecond * this.minutesInAnHour) % this.SecondsInAMinute);
     this.hoursToDday = Math.floor((timeDifference) / (this.milliSecondsInASecond * this.minutesInAnHour * this.SecondsInAMinute) % this.hoursInADay);
