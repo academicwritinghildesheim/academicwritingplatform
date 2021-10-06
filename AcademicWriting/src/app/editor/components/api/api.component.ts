@@ -157,15 +157,24 @@ export class ApiComponent implements OnInit {
         console.log(response.message.author[0]) //für alle autoren?
         console.log(response.message.reference)
         let references = []
-        response.message.reference.forEach(element => {
-          references.push({ titel: element['article-title'], doi: element['key'] })
-        });
-        this.resultLiteratureSearch = references
-        let authors = []
-        response.message.author.forEach(element => {
-          authors.push(element.family)
-        });
-        //this.getSimiliarLiteraturebyAuthor(authors)
+        if (response.message.reference != undefined) {
+          console.log("undefined")
+          response.message.reference.forEach(element => {
+            references.push({ titel: element['article-title'], doi: element['key'] })
+          });
+          this.resultLiteratureSearch = references
+        } else if (response.message.author != undefined) {
+          let authors = []
+          response.message.author.forEach(element => {
+            authors.push(element.family)
+          });
+          this.getSimiliarLiteraturebyAuthor(authors)
+        }
+
+
+
+
+
 
 
       });
@@ -185,9 +194,10 @@ export class ApiComponent implements OnInit {
         let literatureRecommendations = []
         response.message.items.forEach(element => {
           //literatureRecommendations.push(element.title)
-          literatureRecommendations.push(element)
+          literatureRecommendations.push({ titel: element['container-title'], doi: element['DOI'] })
         });
         console.log(literatureRecommendations)
+        this.resultLiteratureSearch = literatureRecommendations
       });
   }
 
