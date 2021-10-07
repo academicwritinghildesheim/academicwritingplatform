@@ -108,7 +108,7 @@ export class ApiComponent implements OnInit {
         'Content-Type': 'application/json',
       })
     };
-    this.http.get(`https://api.unpaywall.org/v2/search/?query=${title}&email=marcel.ritzmann@gmx.de`, httpOptions)
+    this.http.get(`https://api.unpaywall.org/v2/search/?query=${title}&email=spam.mail@gmx.de`, httpOptions)
       .subscribe((response: any) => {
         console.log(response);
         console.log(response.results[0].response.doi)
@@ -130,14 +130,14 @@ export class ApiComponent implements OnInit {
     //this.http.get(`https://api.crossref.org/works/10.1037/0003-066X.59.1.29/agency`, httpOptions)
     this.http.get(`https://api.crossref.org/works/${doi}/agency`, httpOptions)
       .subscribe((response: any) => {
-        console.log(response);
-        console.log(response.status);
+        //console.log(response);
+        // console.log(response.status);
         if (response.status == "ok") {
           this.getSimiliarLiteraturebyDOI(doi)
-          console.log("jo ok")
+          // console.log("jo ok")
         }
         else {
-          console.log("not ok")
+          //console.log("not ok")
         }
 
       });
@@ -158,10 +158,10 @@ export class ApiComponent implements OnInit {
         console.log(response.message.reference)
         let references = []
         if (response.message.reference != undefined) {
-          console.log("undefined")
           response.message.reference.forEach(element => {
-            references.push({ titel: element['article-title'], doi: element['key'] })
+            references.push({ titel: element['article-title'], doi: element['DOI'] })
           });
+          //var filtered = references
           this.resultLiteratureSearch = references
         } else if (response.message.author != undefined) {
           let authors = []
