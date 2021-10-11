@@ -1,15 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
-import {MatDialog} from '@angular/material/dialog';
-import {RegistrierungsDialogComponent} from '../registrierungs-dialog/registrierungs-dialog.component';
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { RegistrierungsDialogComponent } from '../registrierungs-dialog/registrierungs-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   public hide = true;
 
   public usernameFormControl = new FormControl('', [
@@ -17,7 +18,6 @@ export class LoginComponent implements OnInit {
   ]);
 
   public emailFormControl = new FormControl('', [
-    Validators.required,
     Validators.email,
   ]);
 
@@ -25,14 +25,24 @@ export class LoginComponent implements OnInit {
     Validators.required,
   ]);
 
-  constructor(private readonly http: HttpClient, public dialog: MatDialog) {
-  }
-
-
-  public ngOnInit(): void {
+  constructor(private readonly http: HttpClient, public dialog: MatDialog, private router: Router) {
   }
 
   public login(): void {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+    this.http.post('https://academicwritinghildesheim.herokuapp.com/api/auth/login',
+      { username: this.usernameFormControl.value, password: this.passwordFormControl.value }, httpOptions)
+      .subscribe((user: any) => {
+        console.log(user.access_token)
+        localStorage.setItem('access_token', user.access_token);
+        localStorage.setItem('user_id', this.usernameFormControl.value);
+        this.router.navigateByUrl('editor').then(r => r);
+      });
   }
 
   public registrieren(): void {
