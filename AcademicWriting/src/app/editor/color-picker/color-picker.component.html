@@ -4,13 +4,14 @@
       <p class="style">{{ heading }}</p>
     </div>
     <div class="hex-code">
-      <p>Klicken für Hex Code</p>
+      <p>Klicke auf die Farbe für die Kopie der Syntax.</p>
+      <p>&lt;font color='Hexcode'&gt;Hier steht dein Text in Farbe.&lt;/font&gt;</p>
       <div class="g-input">
         <input readonly type="text" maxlenght="7" [value]="color" (keyup)="changeColorManual(paintInput.value)"
-               (keydown.enter)="toggleColors()" #paintInput/>
+          (keydown.enter)="toggleColors()" #paintInput />
       </div>
       <div (click)="changeColor(paint)" *ngFor="let paint of defaultColors" class="circle"
-           [ngStyle]="{'background': paint}">
+        [ngStyle]="{'background': paint}">
       </div>
     </div>
   </div>
