@@ -47,7 +47,7 @@ export class ApiComponent implements OnInit {
     Validators.required,
   ]);
 
-  //private base_url='https://academicwritinghildesheim.herokuapp.com/api/synonyms?word=zeigen'
+  //private base_url='<BACKEND PLACEHOLDER>/api/synonyms?word=zeigen'
 
 
   /*startet funktion je nachdem welcher button in editor gedrückt wurde/welcher parameter übergeben wurde.
@@ -81,7 +81,7 @@ export class ApiComponent implements OnInit {
       })
     };
 
-    this.http.get(`https://academicwritinghildesheim.herokuapp.com/api/${this.selectedCategory}?word=${this.suchWort}`, httpOptions)
+    this.http.get(`<BACKEND PLACEHOLDER>/api/${this.selectedCategory}?word=${this.suchWort}`, httpOptions)
       .subscribe(wordList => {
         console.log(wordList);
         this.resultWordList = wordList
@@ -207,7 +207,7 @@ export class ApiComponent implements OnInit {
   }
   */
 
-  //const req = new HttpRequest('GET', 'https://academicwritinghildesheim.herokuapp.com/api/synonyms?word=zeigen', {
+  //const req = new HttpRequest('GET', '<BACKEND PLACEHOLDER>/api/synonyms?word=zeigen', {
   //reportProgress: true
 
 
